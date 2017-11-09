@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top">
@@ -12,14 +12,16 @@
         android:layout_height="wrap_content" />
 
     <TextView
+
         android:id="@+id/title_view"
-        android:text="task title"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
+        android:layout_marginTop="55dp"
         android:id="@+id/des_view"
-        android:text="Task des"
+android:textColor="@color/colorAccent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="match_parent" />
+</FrameLayout>

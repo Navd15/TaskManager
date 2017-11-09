@@ -1,6 +1,7 @@
 package brewcrew.com.taskmanager;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 /**
  * Created by navdeep on 09/11/2017.
@@ -8,10 +9,20 @@ import java.util.Date;
 
 public class MyTasks {
     String title;
-    String Desc;
-    Date date;
-    public MyTasks() {
+    String desc;
+    String date;
 
+
+
+    public MyTasks(){};
+
+
+
+    public MyTasks(String d1,String t1,String d) {
+
+        d1=date;
+        t1=title;
+        d=desc;
 
     }
 
@@ -24,23 +35,20 @@ public class MyTasks {
     }
 
     public String getDesc() {
-        return Desc;
+        return desc;
     }
 
     public void setDesc(String desc) {
-        Desc = desc;
+        desc = desc;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
+
 }

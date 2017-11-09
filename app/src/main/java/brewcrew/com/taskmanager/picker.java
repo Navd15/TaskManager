@@ -25,12 +25,12 @@ public  class picker extends DialogFragment implements DatePickerDialog.OnDateSe
         int date= c.get(Calendar.DATE);
 
 
-        return new DatePickerDialog(getContext(),this,year,month,day);
+        return new DatePickerDialog(getActivity(),this,year,month,day);
 
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
+Editor.textView.setText(datePicker.getDayOfMonth()+"-"+datePicker.getMonth()+"-"+datePicker.getYear());
     }
 }
