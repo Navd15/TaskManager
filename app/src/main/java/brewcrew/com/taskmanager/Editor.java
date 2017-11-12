@@ -53,8 +53,10 @@ MainActivity.recycler.setAdapter(new taskRecycler(MainActivity.li));
     }
 
     public void datePicker(View v ){
-    DialogFragment  dialogFragment=new DialogFragment();
-    dialogFragment.show(getSupportFragmentManager(),"picker");
+picker pic=new picker();
+        pic.show(getSupportFragmentManager(),"picker");
+//    DialogFragment  dialogFragment=new DialogFragment();
+//    dialogFragment.show(getSupportFragmentManager(),"picker.class");
 
 }
 

@@ -11,6 +11,8 @@ public class MyTasks {
     String title;
     String desc;
     String date;
+    boolean isCompleted;
+
 
 
 
@@ -18,12 +20,12 @@ public class MyTasks {
 
 
 
-    public MyTasks(String d1,String t1,String d) {
+    public MyTasks(String d1,String t1,String d,boolean completed) {
 
         d1=date;
         t1=title;
         d=desc;
-
+        completed=isCompleted;
     }
 
     public String getTitle() {
@@ -50,5 +52,11 @@ public class MyTasks {
         this.date = date;
     }
 
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }

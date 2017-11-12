@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:theme="@style/App"
     android:layout_height="match_parent"
     tools:context="brewcrew.com.taskmanager.MainActivity">
 
@@ -18,6 +19,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
+        style="@style/App"
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,11 +27,12 @@
     </android.support.v7.widget.RecyclerView>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
+
         android:layout_width="83dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_add"
+        android:src="@drawable/ic_add_black_24dp"
 
         />
 
