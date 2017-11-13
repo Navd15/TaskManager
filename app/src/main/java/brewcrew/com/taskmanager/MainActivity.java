@@ -1,6 +1,9 @@
 package brewcrew.com.taskmanager;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.sql.SQLData;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -99,5 +103,14 @@ static taskRecycler taskRec ;
         super.onRestart();
     }
 
+    //to handle db tasks
+    class Async extends AsyncTask<Cursor,Void,String[]>{
+
+
+        @Override
+        protected String[] doInBackground(Cursor... cursors) {
+            return new String[0];
+        }
+    }
 
 }

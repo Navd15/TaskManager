@@ -30,4 +30,5 @@ sqLiteDatabase.execSQL("create table if not exists database(id integer,title tex
 
 
     }
+
 }
