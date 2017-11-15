@@ -3,24 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:theme="@style/App"
-    android:layout_height="match_parent"
-    tools:context="brewcrew.com.taskmanager.MainActivity">
 
-<TextView
-    android:visibility="gone"
-    android:id="@+id/notice"
-    android:textColor="@android:color/darker_gray"
-    android:gravity="center"
- android:textSize="55dp"
-    android:text="No tasks to show"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+
+    tools:context="brewcrew.com.taskmanager.MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         style="@style/App"
         android:visibility="visible"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
