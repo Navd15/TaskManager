@@ -1,5 +1,6 @@
       package brewcrew.com.taskmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,39 +18,37 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Editor extends AppCompatActivity {
-public static TextView textView;
-  public static  EditText ET;
+public static TextView date;
+  public static  EditText desc;
     String tag="Editor";
+    Intent in;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
-        textView=(TextView) findViewById(R.id.date);
-        ET=(EditText) findViewById(R.id.ET);
-        ET.setText(ET.getText());
+String tareekh=in.getExtras().getString("default_date");
+        date=(TextView) findViewById(R.id.date);
+        date.setText(tareekh);
+        desc=(EditText) findViewById(R.id.desc);
+        desc.setText(desc.getText());
 
 
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK&& ET.getText().toString().length()!=0){
-          //  new MyTasks(textView.getText().toString(),ET.getText().subSequence(0,11).toString(),ET.getText().toString());
-MyTasks m=new MyTasks();
-            m.setDesc(ET.getText().toString());
+        if(keyCode==KeyEvent.KEYCODE_BACK && desc.getText().toString().length()!=0){
+//          new MyTasks(textView.getText().toString(),ET.getText().subSequence(0,11).toString(),ET.getText().toString());
+MyTasks m=new MyTasks(date.getText().toString(),desc.getText().subSequence(0,desc.getText().length()/2).toString(),desc.getText().toString(),false);
+
 
 MainActivity.li.add(m);
-
-MainActivity.recycler.setAdapter(new taskRecycler(MainActivity.li));
-            MainActivity.taskRec.notifyDataSetChanged();
-
 
         }
 
 
-        return super.onKeyUp(keyCode, event);
+        return super.onKeyDown(keyCode, event);
     }
 
     public void datePicker(View v ){
