@@ -22,17 +22,18 @@ public class MyTasks {
 
     public MyTasks(String d1,String t1,String d,boolean completed) {
 
-        d1=date;
-        t1=title;
-        d=desc;
-        completed=isCompleted;
+        date=d1;
+        title=t1;
+
+        desc=d;
+        isCompleted=completed;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    private void setTitle(String title) {
         this.title = title;
     }
 
@@ -40,7 +41,7 @@ public class MyTasks {
         return desc;
     }
 
-    public void setDesc(String desc) {
+    private void setDesc(String desc) {
         desc = desc;
     }
 
@@ -48,7 +49,7 @@ public class MyTasks {
         return date;
     }
 
-    public void setDate(String date) {
+    private void setDate(String date) {
         this.date = date;
     }
 
@@ -56,7 +57,7 @@ public class MyTasks {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
+    private void setCompleted(boolean completed) {
         isCompleted = completed;
     }
 }
