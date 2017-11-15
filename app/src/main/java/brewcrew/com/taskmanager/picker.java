@@ -15,8 +15,40 @@ import java.util.Calendar;
 
 
 public class picker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+   public static String give_month_in_string(int month_of_year) {
+        switch (month_of_year) {
+            case 0:
+                return give_month.January.toString();
+            case 1:
+                return give_month.Febuary.toString();
+            case 2:
+                return give_month.March.toString();
+            case 3:
+                return give_month.April.toString();
+            case 4:
+                return give_month.May.toString();
+            case 5:
+                return give_month.June.toString();
+            case 6:
+                return give_month.July.toString();
+            case 7:
+                return give_month.August.toString();
+            case 8:
+                return give_month.September.toString();
+            case 9:
+                return give_month.October.toString();
+            case 10:
+                return give_month.November.toString();
+            case 11:
+                return give_month.December.toString();
+            default:
+                return null;
+        }
 
-    private enum give_month {
+
+    }
+
+    public enum give_month {
         January,
         Febuary,
         March,
@@ -52,38 +84,7 @@ public class picker extends DialogFragment implements DatePickerDialog.OnDateSet
         Editor.date.setText(datePicker.getDayOfMonth() + "/" + give_month_in_string(datePicker.getMonth())+ "/" + datePicker.getYear());
     }
 
-    private String give_month_in_string(int month_of_year) {
-        switch (month_of_year) {
-            case 1:
-                return give_month.January.toString();
-            case 2:
-                return give_month.Febuary.toString();
-            case 3:
-                return give_month.March.toString();
-            case 4:
-                return give_month.April.toString();
-            case 5:
-                return give_month.May.toString();
-            case 6:
-                return give_month.June.toString();
-            case 7:
-                return give_month.July.toString();
-            case 8:
-                return give_month.August.toString();
-            case 9:
-                return give_month.September.toString();
-            case 10:
-                return give_month.October.toString();
-            case 11:
-                return give_month.November.toString();
-            case 12:
-                return give_month.December.toString();
-            default:
-                return null;
-        }
 
-
-    }
 
 }
 

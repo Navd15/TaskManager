@@ -2,71 +2,67 @@ package brewcrew.com.taskmanager;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-import java.sql.SQLData;
 import java.text.DateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-LinearLayoutManager linear;
-static List li;
-static taskRecycler taskRec ;
- static  RecyclerView recycler;
+    LinearLayoutManager linear;
+    static List li;
+    taskRecycler taskRec;
+    RecyclerView recycler;
+    Calendar calendar=Calendar.getInstance();
     TextView notice;
+
+String date_today=calendar.getInstance().get(Calendar.DATE)+" "+picker.give_month_in_string(calendar.get(Calendar.MONTH))+" "+calendar.get(Calendar.YEAR);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        li=new ArrayList<MyTasks>();
-
+        li = new ArrayList<MyTasks>();
         // Text view
 
-        notice=(TextView) findViewById(R.id.notice) ;
+
+        recycler = (RecyclerView) findViewById(R.id.recycler);
+        taskRec = new taskRecycler(li);
 
 
-    //recyler view intialization
-      taskRec=new taskRecycler(li);
-   linear=new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
-   recycler=(RecyclerView) findViewById(R.id.recycler);
-  recycler.setLayoutManager(linear);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        //recyler view intialization
+
+
         recycler.setAdapter(taskRec);
-
-        recycler.invalidate();
-
-
+        recycler.setLayoutManager(layoutManager);
 
 
         // item click events
 
-
-
-        //FloatingButton
+        //FloatingButtonDateFormat.getInstance().toString()
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent add=new Intent(getApplicationContext(),Editor.class);
-                add.putExtra("default date", DateFormat.FULL);
+                Intent add = new Intent(getApplicationContext(), Editor.class);
+
+                add.putExtra("default date",date_today);
                 startActivity(add);
+
 
             }
         });
@@ -78,7 +74,6 @@ static taskRecycler taskRec ;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
 
     @Override
@@ -97,14 +92,8 @@ static taskRecycler taskRec ;
     }
 
 
-    @Override
-    protected void onRestart() {
-        recycler.setAdapter(taskRec);
-        super.onRestart();
-    }
-
     //to handle db tasks
-    class Async extends AsyncTask<Cursor,Void,String[]>{
+    class Async extends AsyncTask<Cursor, Void, String[]> {
 
 
         @Override
