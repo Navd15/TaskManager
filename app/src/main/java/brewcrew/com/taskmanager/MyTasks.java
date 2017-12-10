@@ -11,26 +11,34 @@ public class MyTasks {
     String title;
     String desc;
     String date;
+    boolean isCompleted;
+    String time;
+
 
 
 
     public MyTasks(){};
 
+    public MyTasks(String desc) {
+        this.desc = desc;
+        
+    }
 
+    public MyTasks(String d1, String t1, String d, String tym, boolean completed) {
 
-    public MyTasks(String d1,String t1,String d) {
+        date=d1;
+        title=t1;
 
-        d1=date;
-        t1=title;
-        d=desc;
-
+        desc=d;
+        isCompleted=completed;
+        time=tym;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    private void setTitle(String title) {
         this.title = title;
     }
 
@@ -38,7 +46,7 @@ public class MyTasks {
         return desc;
     }
 
-    public void setDesc(String desc) {
+    private void setDesc(String desc) {
         desc = desc;
     }
 
@@ -46,9 +54,15 @@ public class MyTasks {
         return date;
     }
 
-    public void setDate(String date) {
+    private void setDate(String date) {
         this.date = date;
     }
 
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 
+    private void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }

@@ -3,33 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="brewcrew.com.taskmanager.MainActivity">
+android:theme="@style/App"
 
+    android:layout_height="match_parent"
+
+    tools:context="brewcrew.com.taskmanager.MainActivity">
 <TextView
-    android:visibility="gone"
-    android:id="@+id/notice"
-    android:textColor="@android:color/darker_gray"
+    android:background="@color/color_notice_bg"
     android:gravity="center"
- android:textSize="55dp"
-    android:text="No tasks to show"
+    android:elevation="5dp"
+    android:textSize="45dp"
+    android:translationZ="5dp"
+    android:fontFamily="serif"
+    android:textColor="#ffff"
+    android:alpha="0.5"
+    android:id="@+id/notice_view"
+    android:text="@string/notice"
+    android:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
-        android:visibility="visible"
+        android:visibility="invisible"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="83dp"
+        android:layout_width="wrap_content"
+       android:theme="@style/App"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add"
+        android:translationZ="5dp"
+        android:src="@drawable/ic_add_black_24dp"
 
         />
 
