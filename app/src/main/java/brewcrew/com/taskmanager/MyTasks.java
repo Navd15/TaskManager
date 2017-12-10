@@ -12,21 +12,26 @@ public class MyTasks {
     String desc;
     String date;
     boolean isCompleted;
+    String time;
 
 
 
 
     public MyTasks(){};
 
+    public MyTasks(String desc) {
+        this.desc = desc;
+        
+    }
 
-
-    public MyTasks(String d1,String t1,String d,boolean completed) {
+    public MyTasks(String d1, String t1, String d, String tym, boolean completed) {
 
         date=d1;
         title=t1;
 
         desc=d;
         isCompleted=completed;
+        time=tym;
     }
 
     public String getTitle() {

@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class database extends SQLiteOpenHelper{
     private static final String TAG = "database";
-
+    private static String makeTable="";
 
     public database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

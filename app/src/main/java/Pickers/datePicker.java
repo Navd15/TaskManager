@@ -1,4 +1,4 @@
-package brewcrew.com.taskmanager;
+package Pickers;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -9,12 +9,14 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
+import brewcrew.com.taskmanager.Editor;
+
 /**
  * Created by navdeep on 09/11/2017.
  */
 
 
-public class picker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class datePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
    public static String give_month_in_string(int month_of_year) {
         switch (month_of_year) {
             case 0:
