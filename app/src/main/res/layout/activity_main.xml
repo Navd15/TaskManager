@@ -7,7 +7,7 @@ android:theme="@style/App"
 
     android:layout_height="match_parent"
 
-    tools:context="brewcrew.com.taskmanager.MainActivity">
+    tools:context="brewcrew.com.taskmanager.activities.MainActivity">
 <TextView
     android:background="@color/color_notice_bg"
     android:gravity="center"

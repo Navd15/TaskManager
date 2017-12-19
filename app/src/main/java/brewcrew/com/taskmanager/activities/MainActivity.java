@@ -1,9 +1,7 @@
-package brewcrew.com.taskmanager;
+package brewcrew.com.taskmanager.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +18,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import Pickers.datePicker;
+import brewcrew.com.taskmanager.Pickers.datePicker;
+import brewcrew.com.taskmanager.R;
+import brewcrew.com.taskmanager.helperClasses.MyTasks;
+import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayoutManager linear;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
     TextView notice;
 
-    String date_today = calendar.getInstance().get(Calendar.DATE) + " " + datePicker.give_month_in_string(calendar.get(Calendar.MONTH)) + " " + calendar.get(Calendar.YEAR);
+    String date_today = calendar.getInstance().get(Calendar.DATE) + "/" + datePicker.give_month_in_string(calendar.get(Calendar.MONTH)) + "/" + calendar.get(Calendar.YEAR);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         recycler.setLayoutManager(layoutManager);
 
 
+     // item click events
 
-        // item click events
 
         //FloatingButtonDateFormat.getInstance().toString()
 
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
         visibilitySetter();
         recycler.setAdapter(taskRec);
     }
+
+    //Helper methods
 
     //to handle db tasks
     class Async extends AsyncTask<Cursor, Void, String[]> {

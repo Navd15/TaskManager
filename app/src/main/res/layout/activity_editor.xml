@@ -1,63 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-
     android:layout_height="match_parent"
-    tools:context="brewcrew.com.taskmanager.Editor">
+    tools:context="brewcrew.com.taskmanager.activities.Editor"
+    >
 
 
-    <TextView
-android:textSize="25sp"
-        android:id="@+id/date"
-        android:background="@android:color/transparent"
-        android:hint="date"
-        android:textColorHint="@android:color/darker_gray"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="showDatePicker"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/desc"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
-        app:layout_constraintVertical_bias="0.046"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:background="@drawable/rect"
+        android:orientation="horizontal"
+        android:elevation="6dp">
+        <ImageView
+            android:id="@+id/notifi"
+android:src="@drawable/noti_off"
+            android:background="@drawable/rect"
+            android:elevation="0dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+
+            android:gravity="center"
+            android:hint="Done "
+            android:textSize="20sp"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/rect"
+            android:orientation="horizontal"
+            android:layout_weight="4"
+            android:elevation="14dp">
+            <TextView
+                android:text=""
+                android:textColor="#000"
+                android:padding="4dp"
+                android:background="@drawable/rect"
+                android:fontFamily="serif"
+                android:onClick="showTimePicker"
+                android:layout_weight="1"
+                android:id="@+id/time_view"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="time" />
+
+            <TextView
+android:padding="4dp"
+                android:background="@drawable/rect_color"
+                android:textColor="#000"
+                android:fontFamily="sans-serif-condensed"
+                android:id="@+id/date"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="date"
+                android:textSize="18sp"
+                android:onClick="showDatePicker" />
+
+            </LinearLayout>
 
 
- <EditText
-     android:textColorHint="@android:color/darker_gray"
-    android:gravity="center_horizontal"
-    android:hint="desc"
-
-     android:id="@+id/desc"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-     app:layout_constraintBottom_toBottomOf="parent"
-     android:layout_marginBottom="226dp"
-     android:layout_marginRight="8dp"
-     app:layout_constraintRight_toRightOf="parent"
-     android:layout_marginLeft="8dp"
-     app:layout_constraintLeft_toLeftOf="parent" />
-
-    <TextView
-        android:gravity="center_horizontal"
-        android:id="@+id/time_view"
-        android:layout_width="105dp"
-        android:layout_height="0dp"
-        android:hint="task date"
-        app:layout_constraintLeft_toRightOf="@+id/date"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="26dp"
-        app:layout_constraintHorizontal_bias="1.0" />
 
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            android:padding="5dp"
+            android:textColor="#000"
+            android:fontFamily="serif"
+            android:hint="Title"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+
+            />
+
+        <EditText
+
+android:layout_marginTop="0.01sp"
+            android:textColor="#000"
+            android:paddingTop="3dp"
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:background="#fff"
+            android:hint="Write here..."
+            android:fontFamily="serif"
+            android:textColorHint="@android:color/darker_gray" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

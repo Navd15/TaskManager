@@ -1,4 +1,4 @@
-package Pickers;
+package brewcrew.com.taskmanager.Pickers;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -9,7 +9,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-import brewcrew.com.taskmanager.Editor;
+import brewcrew.com.taskmanager.activities.Editor;
 
 /**
  * Created by navdeep on 09/11/2017.

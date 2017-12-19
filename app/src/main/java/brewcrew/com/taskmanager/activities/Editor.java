@@ -1,16 +1,19 @@
-package brewcrew.com.taskmanager;
+package brewcrew.com.taskmanager.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
 
-import Pickers.datePicker;
-import Pickers.timePicker;
+import brewcrew.com.taskmanager.Pickers.datePicker;
+import brewcrew.com.taskmanager.Pickers.timePicker;
+import brewcrew.com.taskmanager.R;
+import brewcrew.com.taskmanager.helperClasses.MyTasks;
 
 public class Editor extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
@@ -23,6 +26,7 @@ public class Editor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        getSupportActionBar().setTitle(null);
         String tareek = getIntent().getStringExtra("default date");
         date = (TextView) findViewById(R.id.date);
         date.setText(tareek);
@@ -31,8 +35,8 @@ public class Editor extends AppCompatActivity {
         timeView=(TextView) findViewById(R.id.time_view);
 
 
-
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -61,10 +65,10 @@ public class Editor extends AppCompatActivity {
 //    dialogFragment.show(getSupportFragmentManager(),"datePicker.class");
 
     }
-public void showTimePicker(){
+
+public void showTimePicker(View v){
     new timePicker().show(getFragmentManager(),"time_picker");
 
 
 }
-
 }

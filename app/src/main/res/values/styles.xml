@@ -1,13 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-    </style>
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">android:gravity="left|center"</style>
 
     <style name="AppBaseTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -18,4 +12,20 @@
 
 </style>
 
+    <style name="Editor" parent="AppBaseTheme">
+
+    </style>
+
+    <style name="editor" parent="AppBaseTheme" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/background_material_light</item>
+        <item name="android:statusBarColor">@color/stcolor</item>
+        <item name="android:textColorPrimary">@color/tcp</item>
+        <item name="android:textColorPrimaryInverse">@color/primary_text_material_dark</item>
+        <item name="android:textColorSecondary">@color/secondary_text_material_light</item>
+        <item name="android:colorForeground">@color/foreground_material_light</item>
+        <item name="android:windowBackground">@color/wbc</item>
+        <item name="android:textColorSecondaryInverse">@color/secondary_text_material_dark</item>
+        <item name="android:navigationBarColor">@android:color/background_dark</item>
+    </style>
 </resources>
