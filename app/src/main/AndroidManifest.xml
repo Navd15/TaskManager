@@ -21,6 +21,7 @@
         <activity
             android:parentActivityName=".activities.MainActivity"
             android:name=".activities.Editor"
+            android:theme="@style/editor"
             android:label="@string/title_activity_editor"
             />
     </application>
