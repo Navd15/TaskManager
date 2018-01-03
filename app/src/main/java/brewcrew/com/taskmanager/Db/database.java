@@ -31,10 +31,9 @@ public class database extends SQLiteOpenHelper {
                 + databaseEntries.date + "TEXT NOT NULL,"
                 + databaseEntries.time + "TEXT NOT NULL );";
         db.execSQL(createTable);
-        Cursor cursor = db.rawQuery("SELECT * FROM" + databaseEntries.tableName, null);
-        Log.e(TAG, "onCreate:"+cursor.getColumnCount());
 
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
