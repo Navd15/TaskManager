@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,15 +25,20 @@ import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements taskRecycler.touchListener {
+    private static final String TAG = "MainActivity";
     LinearLayoutManager linear;
     static List li = new ArrayList<MyTasks>();
+    private Intent add_edit;
     taskRecycler taskRec;
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
 
-    String date_today = calendar.getInstance().get(Calendar.DATE) + "/" + datePicker.give_month_in_string(calendar.get(Calendar.MONTH)) + "/" + calendar.get(Calendar.YEAR);
+    String date_today = calendar.getInstance().get(Calendar.DATE) + "/"
+            + datePicker.give_month_in_string(calendar.get(Calendar.MONTH))
+            + "/" + calendar.get(Calendar.YEAR);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +46,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
-        recycler.setVisibility(View.INVISIBLE);
         visibilitySetter();
-        taskRec = new taskRecycler(li);
+        taskRec = new taskRecycler(li,this);
 
-        StaggeredGridLayoutManager layoutManager=new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
-        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         //recyler view intialization
 
@@ -54,19 +60,22 @@ public class MainActivity extends AppCompatActivity {
         recycler.setLayoutManager(layoutManager);
 
 
-     // item click events
 
 
-        //FloatingButtonDateFormat.getInstance().toString()
+
+        //FloatingButton
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent add = new Intent(getApplicationContext(), Editor.class);
+                 add_edit = new Intent(getApplicationContext(), Editor.class);
 
-                add.putExtra("default date", date_today);
-                startActivity(add);
+                add_edit.putExtra("default date", date_today);
+
+
+                startActivity(add_edit);
 
 
             }
@@ -111,9 +120,40 @@ public class MainActivity extends AppCompatActivity {
         recycler.setAdapter(taskRec);
     }
 
-    //Helper methods
 
-    //to handle db tasks
+    /*Helper methods
+    *
+    *
+    * */
+
+
+    // item click events
+    @Override
+    public void onCleck(int clickedIndex) {
+ add_edit=new Intent(getApplicationContext(),Editor.class);
+        add_edit.putExtra("from_onCleck",clickedIndex);
+
+        Log.i(TAG, "onCleck clicked:"+clickedIndex);
+    }
+
+
+    void visibilitySetter() {
+
+        if (li.size()<1) {
+            notice.setVisibility(View.INVISIBLE);
+            recycler.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            recycler.setVisibility(View.INVISIBLE);
+            notice.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
+
+    //Fetch data from database with different thread
     class Async extends AsyncTask<Cursor, Void, String[]> {
 
 
@@ -123,16 +163,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //helper methods
-    void visibilitySetter() {
-
-        if (li.size()==0) {
-            notice.setVisibility(View.VISIBLE);
-            recycler.setVisibility(View.INVISIBLE);
-        } else
-            recycler.setVisibility(View.VISIBLE);
-        notice.setVisibility(View.INVISIBLE);
 
 
-    }
 }
