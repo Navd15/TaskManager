@@ -6,16 +6,16 @@
     <color name="color_notice_view">#f6ff4b</color>
     <color name="color_notice_bg">#2f90ff</color>
 <color name="card_bg_color">#3eaff5</color>
-    <color name="accent_material_light">#2f5589</color>
-    <color name="background_material_light">#eec325</color>
+    <color name="accent_material_light">#f63461</color>
+    <color name="background_material_light">#ffffff</color>
     <color name="primary_text_material_dark">#000000</color>
-    <color name="secondary_text_material_light">#090909</color>
+    <color name="secondary_text_material_light">#ffffff</color>
     <color name="primary_dark_material_light">#3b7dc5</color>
-    <color name="foreground_material_light">#f2c6c6</color>
+    <color name="foreground_material_light">#0a0a0a</color>
     <color name="newc">#151515</color>
     <color name="stcolor">#3581d2</color>
     <color name="wd">#00b46f</color>
-    <color name="tcp">#ffffff</color>
-    <color name="secondary_text_material_dark">#b32e3f7c</color>
+    <color name="tcp">#000000</color>
+    <color name="secondary_text_material_dark">#fcfcff</color>
     <color name="wbc">#2e5486</color>
 </resources>
