@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,70 +7,67 @@
     android:layout_height="match_parent"
     tools:context="brewcrew.com.taskmanager.activities.Editor"
     >
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rect"
-        android:orientation="horizontal"
-        android:elevation="6dp">
-        <ImageView
-            android:id="@+id/notifi"
-android:src="@drawable/noti_off"
-            android:background="@drawable/rect"
-            android:elevation="0dp"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-
-            android:gravity="center"
-            android:hint="Done "
-            android:textSize="20sp"
-            />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/rect"
-            android:orientation="horizontal"
-            android:layout_weight="4"
-            android:elevation="14dp">
-            <TextView
-                android:text=""
-                android:textColor="#000"
-                android:padding="4dp"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/rect"
-                android:fontFamily="serif"
-                android:onClick="showTimePicker"
-                android:layout_weight="1"
-                android:id="@+id/time_view"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:hint="time" />
+                android:orientation="horizontal"
+                android:elevation="6dp">
+                <ImageView
+                    android:id="@+id/notifi"
+                    android:src="@drawable/noti_off"
+                    android:background="@drawable/rect"
+                    android:elevation="0dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
 
-            <TextView
-android:padding="4dp"
-                android:background="@drawable/rect_color"
-                android:textColor="#000"
-                android:fontFamily="sans-serif-condensed"
-                android:id="@+id/date"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:hint="date"
-                android:textSize="18sp"
-                android:onClick="showDatePicker" />
+                    android:gravity="center"
+                    android:hint="Done "
+                    android:textSize="20sp"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rect"
+                    android:orientation="horizontal"
+                    android:layout_weight="4"
+                    android:elevation="14dp">
+                    <TextView
+                        android:text=""
+                        android:textColor="#000"
+                        android:padding="4dp"
+                        android:background="@drawable/rect"
+                        android:fontFamily="serif"
+                        android:onClick="showTimePicker"
+                        android:layout_weight="1"
+                        android:id="@+id/time_view"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:hint="time" />
+
+                    <TextView
+                        android:padding="7dp"
+                        android:background="@drawable/rect_color"
+                        android:textColor="#000"
+                        android:fontFamily="sans-serif-condensed"
+                        android:id="@+id/date"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:hint="date"
+                        android:textSize="18sp"
+                        android:onClick="showDatePicker" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
 
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,6 +76,7 @@ android:padding="4dp"
         >
 
         <EditText
+            android:id="@+id/titl"
             android:padding="5dp"
             android:textColor="#000"
             android:fontFamily="serif"
@@ -106,6 +105,7 @@ android:layout_marginTop="0.01sp"
 
 
     </LinearLayout>
+
 
 
 </LinearLayout>
