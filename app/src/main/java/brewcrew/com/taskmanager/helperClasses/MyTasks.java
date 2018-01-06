@@ -45,7 +45,7 @@ public class MyTasks {
         return title;
     }
 
-    private void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -53,7 +53,7 @@ public class MyTasks {
         return desc;
     }
 
-    private void setDesc(String desc) {
+    public void setDesc(String desc) {
         desc = desc;
     }
 
@@ -61,7 +61,7 @@ public class MyTasks {
         return date;
     }
 
-    private void setDate(String date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -69,7 +69,7 @@ public class MyTasks {
         return isCompleted;
     }
 
-    private void setCompleted(boolean completed) {
+    public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
 }
