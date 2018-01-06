@@ -17,7 +17,7 @@ import brewcrew.com.taskmanager.activities.Editor;
 
 
 public class datePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-   public static String give_month_in_string(int month_of_year) {
+    public static String give_month_in_string(int month_of_year) {
         switch (month_of_year) {
             case 0:
                 return give_month.January.toString();
@@ -73,9 +73,9 @@ public class datePicker extends DialogFragment implements DatePickerDialog.OnDat
         int year = c.get(Calendar.YEAR);
         int day = c.get(Calendar.DAY_OF_MONTH);
         int month = c.get(Calendar.MONTH);
-
-
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        DatePickerDialog dpg = new DatePickerDialog(getContext(), this, year, month, day);
+  
+        return dpg;
 
     }
 
@@ -83,9 +83,8 @@ public class datePicker extends DialogFragment implements DatePickerDialog.OnDat
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
 
-        Editor.date.setText(datePicker.getDayOfMonth() + "/" + give_month_in_string(datePicker.getMonth())+ "/" + datePicker.getYear());
+        Editor.date.setText(datePicker.getDayOfMonth() + "/" + give_month_in_string(datePicker.getMonth()) + "/" + datePicker.getYear());
     }
-
 
 
 }
