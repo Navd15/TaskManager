@@ -36,9 +36,11 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     Calendar calendar = Calendar.getInstance();
     TextView notice;
 
-    String date_today = calendar.getInstance().get(Calendar.DATE) + "/"
+    private int date_int  =calendar.get(Calendar.DATE);
+    String date_tommo =date_int + "/"
             + datePicker.give_month_in_string(calendar.get(Calendar.MONTH))
             + "/" + calendar.get(Calendar.YEAR);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
             public void onClick(View view) {
                  add_edit = new Intent(getApplicationContext(), Editor.class);
 
-                add_edit.putExtra("default date", date_today);
+                add_edit.putExtra("default date", date_tommo);
 
 
                 startActivity(add_edit);
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     public void onCleck(int clickedIndex) {
  add_edit=new Intent(getApplicationContext(),Editor.class);
         add_edit.putExtra("from_onCleck",clickedIndex);
-
+startActivity(add_edit);
         Log.i(TAG, "onCleck clicked:"+clickedIndex);
     }
 
@@ -140,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     void visibilitySetter() {
 
         if (li.size()<1) {
-            notice.setVisibility(View.INVISIBLE);
-            recycler.setVisibility(View.VISIBLE);
+            notice.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.INVISIBLE);
         }
         else
         {
-            recycler.setVisibility(View.INVISIBLE);
-            notice.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.VISIBLE);
+            notice.setVisibility(View.INVISIBLE);
 
         }
     }
