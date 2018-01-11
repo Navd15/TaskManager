@@ -24,7 +24,6 @@ public class taskRecycler extends RecyclerView.Adapter<taskRecycler.taskHolders>
 
 
     public interface touchListener {
-
         void onCleck(int clickedIndex);
 
     }

@@ -8,11 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import brewcrew.com.taskmanager.Db.database;
+import brewcrew.com.taskmanager.Db.databaseEntries;
 import brewcrew.com.taskmanager.Pickers.datePicker;
 import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
@@ -28,16 +28,15 @@ import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 
 public class MainActivity extends AppCompatActivity implements taskRecycler.touchListener {
     private static final String TAG = "MainActivity";
-    LinearLayoutManager linear;
     static List li = new ArrayList<MyTasks>();
-    private Intent add_edit;
+    LinearLayoutManager linear;
     taskRecycler taskRec;
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
-
-    private int date_int  =calendar.get(Calendar.DATE);
-    String date_tommo =date_int + "/"
+    private Intent add_edit;
+    private int date_int = calendar.get(Calendar.DATE);
+    String date_tommo = date_int + "/"
             + datePicker.give_month_in_string(calendar.get(Calendar.MONTH))
             + "/" + calendar.get(Calendar.YEAR);
 
@@ -49,30 +48,40 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         visibilitySetter();
-        taskRec = new taskRecycler(li,this);
+        taskRec = new taskRecycler(li, this);
 
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         //recyler view intialization
-
 
 
         recycler.setAdapter(taskRec);
         recycler.setLayoutManager(layoutManager);
 
 
+       /* if (savedInstanceState != null) {
+
+
+        }*/
+
+        database db = new database(this);
+        Cursor cursor=db.getReadableDatabase().
+        Log.i(TAG, "onCreate: " );
+        String sele[]= {databaseEntries.title};
+//        Cursor cursor=db.getReadableDatabase().query(databaseEntries.tableName,sele,null,null,null,null,null);
 
 
 
-        //FloatingButton
-
-
+        /*
+        * fab event handling
+        * */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 add_edit = new Intent(getApplicationContext(), Editor.class);
+                add_edit = new Intent(getApplicationContext(), Editor.class);
 
                 add_edit.putExtra("default date", date_tommo);
 
@@ -123,39 +132,45 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     }
 
 
-    /*Helper methods
-    *
-    *
-    * */
+   /*
+  Helper methods
+    */
 
 
     // item click events
     @Override
     public void onCleck(int clickedIndex) {
- add_edit=new Intent(getApplicationContext(),Editor.class);
-        add_edit.putExtra("from_onCleck",clickedIndex);
-startActivity(add_edit);
-        Log.i(TAG, "onCleck clicked:"+clickedIndex);
+        add_edit = new Intent(getApplicationContext(), Editor.class);
+        add_edit.putExtra("from_onCleck", clickedIndex);
+        startActivity(add_edit);
+        Log.i(TAG, "onCleck clicked:" + clickedIndex);
     }
 
-
+    /*
+    * Show message if no event in List is present.
+    *
+    * */
     void visibilitySetter() {
 
-        if (li.size()<1) {
+        if (li.size() < 1) {
             notice.setVisibility(View.VISIBLE);
             recycler.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
+        } else {
             recycler.setVisibility(View.VISIBLE);
             notice.setVisibility(View.INVISIBLE);
 
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 
 
-    //Fetch data from database with different thread
+        super.onSaveInstanceState(outState);
+    }
+
+    /*
+        Fetch data from database asynchronously*/
     class Async extends AsyncTask<Cursor, Void, String[]> {
 
 
@@ -164,7 +179,6 @@ startActivity(add_edit);
             return new String[0];
         }
     }
-
 
 
 }

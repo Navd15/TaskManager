@@ -39,6 +39,7 @@ public class Editor extends AppCompatActivity {
             desc.setText(tasks.getDesc());
             timeView.setText(tasks.getTime());
 
+
         }
 
 
@@ -49,9 +50,9 @@ public class Editor extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK)
             if (tasks != null) {
-                if (!tasks.getDate().toString().equals(date.getText().toString()) |!tasks.getDesc().toString().equals(desc.getText().toString() ) | !
-                        tasks.getTitle() .equals(titl.getText().toString().toString())
-                         | !tasks.getTime().toString().equals( timeView.getText().toString()) ) {
+                if (!tasks.getDate().toString().equals(date.getText().toString()) | !tasks.getDesc().toString().equals(desc.getText().toString()) | !
+                        tasks.getTitle().equals(titl.getText().toString().toString())
+                        | !tasks.getTime().toString().equals(timeView.getText().toString())) {
 
                     tasks.setDesc(desc.getText().toString());
                     tasks.setDate(date.getText().toString());

@@ -12,8 +12,7 @@ import android.util.Log;
 
 public class database extends SQLiteOpenHelper {
     private static final String TAG = "database";
-    private static final String databaseName = "taskDB";
-    private static final String createTable = "";
+    public static final String databaseName = "taskDb";
     private static int version = 1;
 
     public database(Context context) {
@@ -24,13 +23,17 @@ public class database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE" + databaseEntries.tableName + "("
+        String createTable  = "CREATE TABLE IF NOT EXISTS" + databaseEntries.tableName + "("
                 + databaseEntries.ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + databaseEntries.title + "TEXT,"
                 + databaseEntries.description + "TEXT NOT NULL,"
                 + databaseEntries.date + "TEXT NOT NULL,"
                 + databaseEntries.time + "TEXT NOT NULL );";
+
         db.execSQL(createTable);
+        db.execSQL("INSERT INTO " +databaseEntries.tableName+" VALUES (1,'TITLE','DESC','DATE','TIME');");
+
+        Log.i(TAG, "onCreate: runned");
 
     }
 
