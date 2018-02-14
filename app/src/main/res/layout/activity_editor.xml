@@ -15,8 +15,9 @@
                 android:orientation="horizontal"
                 android:elevation="6dp">
                 <ImageView
-                    android:id="@+id/notifi"
-                    android:src="@drawable/noti_off"
+                    android:translationZ="53dp"
+                    android:id="@+id/notify"
+                    android:src="@drawable/lnr_alarm"
                     android:background="@drawable/rect"
                     android:elevation="0dp"
                     android:layout_weight="1"
@@ -35,6 +36,7 @@
                     android:layout_weight="4"
                     android:elevation="14dp">
                     <TextView
+                        android:translationZ="53dp"
                         android:text=""
                         android:textColor="#000"
                         android:padding="4dp"
