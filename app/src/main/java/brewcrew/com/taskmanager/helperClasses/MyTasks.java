@@ -58,6 +58,7 @@ public class MyTasks {
     }
 
     public String getDate() {
+
         return date;
     }
 
