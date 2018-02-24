@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +19,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import brewcrew.com.taskmanager.Db.database;
 import brewcrew.com.taskmanager.Db.databaseEntries;
 import brewcrew.com.taskmanager.Pickers.datePicker;
 import brewcrew.com.taskmanager.R;
-import brewcrew.com.taskmanager.UI_comps.Itemdecor;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 
@@ -32,14 +29,14 @@ import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 public class MainActivity extends AppCompatActivity implements taskRecycler.touchListener {
     private static final String TAG = "MainActivity";
     static List li = new ArrayList<MyTasks>();
-    static boolean linear_manager=false;
+    static boolean linear_manager = false;
+    private static LinearLayoutManager layoutManager;
     taskRecycler taskRec;
     LinearLayoutManager linearLayoutManager;
     GridLayoutManager gridLayoutManager;
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
-  private static  LinearLayoutManager layoutManager ;
     private Intent add_edit;
     private int date_int = calendar.get(Calendar.DATE);
     String date_tommo = date_int + "/"
@@ -58,11 +55,10 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         taskRec = new taskRecycler(li, this);
 
 
+        toggle();
 
-toggle();
-
-        linearLayoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-     gridLayoutManager  = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        gridLayoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
 
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -71,10 +67,10 @@ toggle();
 
         recycler.setAdapter(taskRec);
 
- //if(linear_manager){
-           // recycler.setLayoutManager(linearLayoutManager);
-   //     }
-     //  else
+        //if(linear_manager){
+        // recycler.setLayoutManager(linearLayoutManager);
+        //     }
+        //  else
 //recycler.setLayoutManager(gridLayoutManager);
 
        /* if (savedInstanceState != null) {
@@ -84,8 +80,8 @@ toggle();
 
         //database db = new database(this);
 
-        Log.i(TAG, "onCreate: " );
-        String sele[]= {databaseEntries.title};
+        Log.i(TAG, "onCreate: ");
+        String sele[] = {databaseEntries.title};
 //        Cursor cursor=db.getReadableDatabase().query(databaseEntries.tableName,sele,null,null,null,null,null);
 
 
@@ -187,31 +183,27 @@ toggle();
         super.onSaveInstanceState(outState);
     }
 
-    void toggle(MenuItem item){
-        if(linear_manager) {
+    void toggle(MenuItem item) {
+        if (linear_manager) {
             item.setIcon(getDrawable(R.drawable.ic_menu));
             recycler.setLayoutManager(gridLayoutManager);
-            linear_manager=false;
-        }
-        else
-        if(!linear_manager)
+            linear_manager = false;
+        } else if (!linear_manager)
             recycler.setAdapter(taskRec);
-            linear_manager=true;
-            item.setIcon(getDrawable(R.drawable.ic_align));
+        linear_manager = true;
+        item.setIcon(getDrawable(R.drawable.ic_align));
         recycler.setLayoutManager(linearLayoutManager);
 
     }
 
-    void toggle(){
-        if(linear_manager) {
+    void toggle() {
+        if (linear_manager) {
 
             recycler.setLayoutManager(gridLayoutManager);
-            linear_manager=false;
-        }
-        else
-        if(!linear_manager)
+            linear_manager = false;
+        } else if (!linear_manager)
             recycler.setAdapter(taskRec);
-        linear_manager=true;
+        linear_manager = true;
 
         recycler.setLayoutManager(linearLayoutManager);
 
