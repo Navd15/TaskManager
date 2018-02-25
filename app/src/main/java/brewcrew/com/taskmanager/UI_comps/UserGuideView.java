@@ -2,10 +2,14 @@ package brewcrew.com.taskmanager.UI_comps;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DrawFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathDashPathEffect;
+import android.graphics.PathEffect;
 import android.graphics.Region;
 import android.graphics.RegionIterator;
 import android.support.annotation.Nullable;
@@ -29,6 +33,7 @@ public class UserGuideView extends View {
     private int viewHeight;
     private int viewWidth;
     private Region region;
+
 
     public UserGuideView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -77,8 +82,9 @@ public class UserGuideView extends View {
 
 
         clipCircle(canvas);
-        canvas.drawColor(Color.LTGRAY);
+        canvas.drawColor(getResources().getColor(R.color.clipPathColor));
         canvas.drawText("Toogle it to get Notified",viewWidth/2,viewHeight/2,textPaint);
+
     }
 
 
@@ -103,10 +109,12 @@ public class UserGuideView extends View {
         //rect paint
         textPaint = new Paint(Paint.LINEAR_TEXT_FLAG);
         textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(Color.YELLOW);
+        textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(80);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setFakeBoldText(true);
+
+
 
 
 
@@ -120,9 +128,11 @@ public class UserGuideView extends View {
         //path
         path = new Path();
 
-        path.addCircle(120, 210,100, Path.Direction.CW);
 
-       // path.op(path, Path.Op.REVERSE_DIFFERENCE);
+        path.addCircle(120, 210,100, Path.Direction.CW);
+        path.setFillType(Path.FillType.EVEN_ODD);
+
+
 
 
     }
@@ -132,7 +142,9 @@ public class UserGuideView extends View {
 
     private void clipCircle(Canvas canvas) {
 
+
         canvas.clipPath(path,Region.Op.DIFFERENCE);
+
 
 
 
