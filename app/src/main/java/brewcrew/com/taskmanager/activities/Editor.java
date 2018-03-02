@@ -26,15 +26,22 @@ import brewcrew.com.taskmanager.UI_comps.UserGuide;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 
 public class Editor extends AppCompatActivity {
+
     private static final String TAG = "Editor";
+
     public static TextView date, timeView;
+
     public static EditText desc, titl;
+
     public static ImageView notifiy;
+
     private MyTasks tasks;
+
     static boolean first_run = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         getSupportActionBar().setTitle(null);
@@ -43,15 +50,14 @@ public class Editor extends AppCompatActivity {
         desc = (EditText) findViewById(R.id.desc);
         notifiy = (ImageView) findViewById(R.id.notify);
         Log.i(TAG, "onCreate: " + first_run);
-        if (first_run) {
+//        if (first_run) {
 
-            showDialog();
-            first_run = false;
-            Log.i(TAG, "onCreate:after loop " + first_run);
-        }
+        showDialog();
+//            first_run = false;
+        Log.i(TAG, "onCreate:after loop " + first_run);
+//        }
 
         timeView = (TextView) findViewById(R.id.time_view);
-
 
         if (getIntent().hasExtra("from_onCleck")) {
             tasks = (MyTasks) MainActivity.li.get(getIntent().getIntExtra("from_onCleck", 0));
@@ -60,15 +66,13 @@ public class Editor extends AppCompatActivity {
             desc.setText(tasks.getDesc());
             timeView.setText(tasks.getTime());
 
-
         }
-
 
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
         if (keyCode == KeyEvent.KEYCODE_BACK)
             if (tasks != null) {
                 if (!tasks.getDate().toString().equals(date.getText().toString()) | !tasks.getDesc().toString().equals(desc.getText().toString()) | !
@@ -79,9 +83,7 @@ public class Editor extends AppCompatActivity {
                     tasks.setDate(Date_formatter(date.getText()));
                     tasks.setTime(timeView.getText().toString());
                     tasks.setTitle(titl.getText().toString());
-                    int temp_pos = getIntent().getIntExtra("from_onCleck", 0);
-//                    MainActivity.li.add(temp_pos, tasks);
-//                    MainActivity.li.remove(temp_pos);
+
                     super.onKeyDown(keyCode, event);
                 }
 
@@ -98,15 +100,16 @@ public class Editor extends AppCompatActivity {
                             tym
                             , false);
 
-
                     MainActivity.li.add(m);
                 } else {
 
                     AlertDialog.Builder ad = new AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog);
                     ad.setMessage("Please select date for the task");
                     ad.setPositiveButton("Set date", new DialogInterface.OnClickListener() {
+
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
                             showDatePicker();
                         }
                     });
@@ -116,15 +119,14 @@ public class Editor extends AppCompatActivity {
                     AlertDialog adg = ad.create();
                     adg.show();
 
-
                 }
             }
 
         return super.onKeyDown(keyCode, event);
     }
 
-
     public void showDatePicker(View v) {
+
         datePicker pic = new datePicker();
         pic.show(getSupportFragmentManager(), "datepicker");
 
@@ -134,6 +136,8 @@ public class Editor extends AppCompatActivity {
     }
 
     public void showDatePicker() {
+
+
         datePicker pic = new datePicker();
         pic.show(getSupportFragmentManager(), "datepicker");
 
@@ -143,8 +147,8 @@ public class Editor extends AppCompatActivity {
     }
 
     public void showTimePicker(View v) {
-        new timePicker().show(getFragmentManager(), "time_picker");
 
+        new timePicker().show(getFragmentManager(), "time_picker");
 
     }
 
@@ -174,7 +178,6 @@ public class Editor extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-
     static String Date_formatter(CharSequence charSequence) {
 
         String temp = charSequence.subSequence(charSequence.length() - 1 - 4, charSequence.length() - 1).toString();
@@ -182,7 +185,7 @@ public class Editor extends AppCompatActivity {
             return charSequence.toString();
         else
 
-return   charSequence.toString().replace(temp,"");
+            return charSequence.toString().replace(temp, "");
 
     }
 

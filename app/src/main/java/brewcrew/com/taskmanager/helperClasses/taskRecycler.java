@@ -64,10 +64,10 @@ public class taskRecycler extends RecyclerView.Adapter<taskRecycler.taskHolders>
     }
 
 
-    List<MyTasks> tasks = new ArrayList<MyTasks>();
+  private  ArrayList<MyTasks> tasks = new ArrayList<MyTasks>();
     //constructor will intialize the List of tasks
 
-    public taskRecycler(List tasks, touchListener tcl) {
+    public taskRecycler(ArrayList tasks, touchListener tcl) {
         this.tasks = tasks;
         listener = tcl;
         Log.i(TAG, "taskRecycler: runned");

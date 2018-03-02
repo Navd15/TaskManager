@@ -4,7 +4,7 @@
     tools:context="brewcrew.com.taskmanager.activities.MainActivity">
     <item
         android:id="@+id/toggle_layout"
-        android:title=" "
         android:icon="@drawable/ic_align"
+        android:title=" "
         app:showAsAction="always" />
 </menu>

@@ -1,15 +1,18 @@
 package brewcrew.com.taskmanager.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,71 +21,79 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import brewcrew.com.taskmanager.Db.database;
 import brewcrew.com.taskmanager.Db.databaseEntries;
 import brewcrew.com.taskmanager.Pickers.datePicker;
 import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 
-
 public class MainActivity extends AppCompatActivity implements taskRecycler.touchListener {
+
     private static final String TAG = "MainActivity";
-    static List li = new ArrayList<MyTasks>();
-    static boolean linear_manager = false;
-    private static LinearLayoutManager layoutManager;
+
+    static ArrayList<MyTasks> li=new ArrayList<MyTasks>();
+
     taskRecycler taskRec;
+
+    private Cursor cursor;
+
     LinearLayoutManager linearLayoutManager;
+
     GridLayoutManager gridLayoutManager;
+
     RecyclerView recycler;
+
     Calendar calendar = Calendar.getInstance();
+
     TextView notice;
+
+    private database db;
+
     private Intent add_edit;
+
     private int date_int = calendar.get(Calendar.DATE);
+
     String date_tommo = date_int + "/"
             + datePicker.give_month_in_string(calendar.get(Calendar.MONTH))
             + "/" + calendar.get(Calendar.YEAR);
 
+    private SharedPreferences sharedPreferences;
+
+    boolean state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
+
+//        try {
+//            taskRec = new taskRecycler(new Async().get(), this);
+//        } catch (InterruptedException IE) {
+//
+//            Log.e(TAG, "onCreate:" + IE.getMessage());
+//        } catch (ExecutionException EE) {
+//
+//            Log.e(TAG, "onCreate:" + EE.getMessage());
+//        }
+
         visibilitySetter();
+        db = new database(this);
+        cursor = database.getCursor(databaseEntries.selectAllQuery, this);
 
-        taskRec = new taskRecycler(li, this);
+        Log.i(TAG, "onCreate:" +cursor.getColumnName(5));
 
-
-        toggle();
 
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        gridLayoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
-
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-
-        //recyler view intialization
-
-
+        gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
+        recycler.setLayoutManager(gridLayoutManager);
         recycler.setAdapter(taskRec);
 
-        //if(linear_manager){
-        // recycler.setLayoutManager(linearLayoutManager);
-        //     }
-        //  else
-//recycler.setLayoutManager(gridLayoutManager);
-
-       /* if (savedInstanceState != null) {
-
-
-        }*/
-
-        //database db = new database(this);
-
-        Log.i(TAG, "onCreate: ");
-        String sele[] = {databaseEntries.title};
-//        Cursor cursor=db.getReadableDatabase().query(databaseEntries.tableName,sele,null,null,null,null,null);
 
 
 
@@ -91,15 +102,15 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         * */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+
                 add_edit = new Intent(getApplicationContext(), Editor.class);
 
                 add_edit.putExtra("default date", date_tommo);
 
-
                 startActivity(add_edit);
-
 
             }
         });
@@ -112,8 +123,22 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         return true;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // getMenuInflater().inflate();
+
+    }
 
     @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
+
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -121,9 +146,10 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.toggle_layout) {
-            toggle(item);
-            return true;
+        switch (id) {
+            case R.id.toggle_layout:
+                toggle(item);
+                break;
 
         }
 
@@ -132,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
 
     @Override
     protected void onRestart() {
+
         super.onRestart();
         visibilitySetter();
         recycler.setAdapter(taskRec);
@@ -140,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
 
     @Override
     protected void onResume() {
+
         super.onResume();
         visibilitySetter();
         recycler.setAdapter(taskRec);
@@ -150,10 +178,10 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
   Helper methods
     */
 
-
     // item click events
     @Override
     public void onCleck(int clickedIndex) {
+
         add_edit = new Intent(getApplicationContext(), Editor.class);
         add_edit.putExtra("from_onCleck", clickedIndex);
         startActivity(add_edit);
@@ -161,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     }
 
     /*
-    * Show message if no event in List is present.
+    * Show banner if no event is present in list
     *
     * */
     void visibilitySetter() {
@@ -179,46 +207,71 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
-
         super.onSaveInstanceState(outState);
     }
 
     void toggle(MenuItem item) {
-        if (linear_manager) {
-            item.setIcon(getDrawable(R.drawable.ic_menu));
+
+        if (state) {
+            Log.i(TAG, "toggle:" + state);
+
             recycler.setLayoutManager(gridLayoutManager);
-            linear_manager = false;
-        } else if (!linear_manager)
-            recycler.setAdapter(taskRec);
-        linear_manager = true;
+            item.setIcon(getDrawable(R.drawable.ic_menu));
+            sharedPreferences.edit().putBoolean("LinearLayoutActive", false).apply();
+        } else
+            Log.i(TAG, "toggle:" + state);
         item.setIcon(getDrawable(R.drawable.ic_align));
         recycler.setLayoutManager(linearLayoutManager);
-
+        sharedPreferences.edit().putBoolean("LinearLayoutActive", true).apply();
     }
 
-    void toggle() {
-        if (linear_manager) {
-
-            recycler.setLayoutManager(gridLayoutManager);
-            linear_manager = false;
-        } else if (!linear_manager)
-            recycler.setAdapter(taskRec);
-        linear_manager = true;
-
-        recycler.setLayoutManager(linearLayoutManager);
-
+    private static Boolean truefalser(int status) {
+        return (status == 0) ? false : true;
     }
-
     /*
-        Fetch data from database asynchronously*/
-    class Async extends AsyncTask<Cursor, Void, String[]> {
+    *Asynchronous Handling of data
+    * */
 
+    class Async extends AsyncTask<Cursor, Void, ArrayList> {
 
         @Override
-        protected String[] doInBackground(Cursor... cursors) {
-            return new String[0];
+        protected void onPreExecute() {
+//            li = new ArrayList<>();
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected ArrayList doInBackground(Cursor... cursores) {
+            Cursor curs = cursores[0];
+
+            int descColumn = curs.getColumnIndexOrThrow(databaseEntries.description);
+            int titleColumn = curs.getColumnIndexOrThrow(databaseEntries.title);
+            int timeColumn = curs.getColumnIndexOrThrow(databaseEntries.time);
+            int dateColumn = curs.getColumnIndexOrThrow(databaseEntries.date);
+            int statusColumn = curs.getColumnIndexOrThrow(databaseEntries.status);
+
+            while (curs.moveToNext()) {
+//                li.add(new MyTasks(curs.getString(descColumn),
+//                        curs.getString(titleColumn),
+//                        curs.getString(timeColumn),
+//                        curs.getString(dateColumn),
+//                        truefalser(curs.getInt(statusColumn))));
+                Log.i(TAG,curs.getString(titleColumn)+" "+" "+
+                        curs.getString(timeColumn)+" "+
+                   curs.getString(dateColumn) );
+
+            }
+
+            curs.close();
+            return li;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList list) {
+            super.onPostExecute(list);
+
         }
     }
-
 
 }

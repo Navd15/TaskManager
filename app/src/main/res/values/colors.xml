@@ -18,4 +18,6 @@
     <color name="tcp">#000000</color>
     <color name="secondary_text_material_dark">#fcfcff</color>
     <color name="wbc">#2e5486</color>
+    <color name="clipPathColor">#96000000</color>
+
 </resources>
