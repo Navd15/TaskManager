@@ -10,6 +10,7 @@ public class MyTasks {
     String desc;
     String date;
     boolean isCompleted;
+    boolean notifyUser;
     String time;
     private static final String TAG = "MyTasks";
 
@@ -29,8 +30,13 @@ public class MyTasks {
     public void setTime(String time) {
         this.time = time;
     }
-
-    public MyTasks(String d1, String t1, String d, String tym, boolean completed) {
+    public boolean isNotifyUser() {
+        return notifyUser;
+    }
+    public void setNotifyUser(boolean notifyUser) {
+        this.notifyUser = notifyUser;
+    }
+    public MyTasks(String d, String t1,String t ,String d1, boolean completed,boolean notifyUser) {
 
         date=d1;
         title=t1;
@@ -38,7 +44,8 @@ public class MyTasks {
         desc=d;
 
         isCompleted=completed;
-        time=tym;
+        this.notifyUser=notifyUser;
+        time=t;
     }
 
     public String getTitle() {
