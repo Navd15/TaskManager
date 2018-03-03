@@ -1,7 +1,6 @@
-package brewcrew.com.taskmanager.UI_comps;
+package brewcrew.com.taskmanager.UIComponents;
 
 import android.app.Dialog;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
 
 import brewcrew.com.taskmanager.R;
 
