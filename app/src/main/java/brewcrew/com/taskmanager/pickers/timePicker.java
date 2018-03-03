@@ -1,4 +1,4 @@
-package brewcrew.com.taskmanager.Pickers;
+package brewcrew.com.taskmanager.pickers;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

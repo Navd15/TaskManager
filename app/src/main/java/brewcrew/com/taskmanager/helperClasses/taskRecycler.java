@@ -42,6 +42,7 @@ public class taskRecycler extends RecyclerView.Adapter<taskRecycler.taskHolders>
         public taskHolders(View itemView) {
             super(itemView);
             Log.i(TAG, "taskHolders: runned");
+
             //Intialize views from recycler_task.xml
 
             //date field
