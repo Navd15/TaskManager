@@ -36,7 +36,7 @@ public class MyTasks {
     public void setNotifyUser(boolean notifyUser) {
         this.notifyUser = notifyUser;
     }
-    public MyTasks(String d, String t1,String t ,String d1, boolean completed,boolean notifyUser) {
+    public MyTasks(String d, String t1,String t ,String d1, boolean notifyUser,boolean completed) {
 
         date=d1;
         title=t1;

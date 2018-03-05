@@ -18,14 +18,13 @@
                 <ImageView
                     android:elevation="8dp"
                     android:id="@+id/notify"
-                    android:src="@drawable/noti_on"
                     android:background="@drawable/rect"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
+                    android:src="@drawable/noti_on"
                     android:gravity="center"
-                    android:hint="Done "
+
                     android:textSize="20sp"
                     />
                 <LinearLayout

@@ -13,7 +13,7 @@ public class database extends SQLiteOpenHelper {
     public static final String databaseName = "taskDb";
     private static int version = 1;
     private final String insert = "(" + databaseEntries.title + "," + databaseEntries.description + ","
-            + databaseEntries.date + "," + databaseEntries.time + "," + databaseEntries.status + ")";
+            + databaseEntries.date + "," + databaseEntries.time + "," + databaseEntries.notifyUser + "," + databaseEntries.status + ")";
     public database(Context context) {
         super(context, databaseName, null, version);
 
@@ -26,22 +26,25 @@ public class database extends SQLiteOpenHelper {
                 + databaseEntries.description + "  text NOT NULL, "
                 + databaseEntries.date + " text NOT NULL, "
                 + databaseEntries.time + " text NOT NULL, "
-                + databaseEntries.notifyUser + " INTEGER NOT NULL "
+                + databaseEntries.notifyUser + " INTEGER NOT NULL, "
                 + databaseEntries.status + " INTEGER  NOT NULL )" + ";";
         db.execSQL(createTable);
-        db.execSQL("INSERT INTO " + databaseEntries.tableName + " " + insert + " VALUES('TITLE','DESC','DATE','TIME',1,0);");
+
+        //comment below lines during
+        //these are just for testing
+        for (int i = 0; i < 5; i++) {
+            db.execSQL("INSERT INTO " + databaseEntries.tableName + " " + insert + " VALUES('TITLE','DESC','DATE','TIME',1,0);");
+        }
         Log.i(TAG, "onCreate: runned");
 
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
     }
-
-
-/*
-* Helper methods
-*
-*/
+    /*
+    * Helper methods
+    *
+    */
     public static Cursor getCursor(String query, Context context) {
         return new database(context).getReadableDatabase().rawQuery(query, null);
 
