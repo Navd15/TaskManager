@@ -44,12 +44,13 @@ public class Editor extends AppCompatActivity {
         desc = (EditText) findViewById(R.id.desc);
         notifiy = (ImageView) findViewById(R.id.notify);
         timeView = (TextView) findViewById(R.id.time_view);
-  notifiy.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-          onOffTogle(Editor.notifiy);
-      }
-  });
+        notifiy.setTag(ON);
+        notifiy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOffTogle((ImageView) view);
+            }
+        });
 //
         Log.i(TAG, "onCreate: " + first_run);
 //        if (first_run) {
@@ -88,7 +89,7 @@ public class Editor extends AppCompatActivity {
 //    dialogFragment.show(getSupportFragmentManager(),"datePicker.class");
 //                    tasks.setDate(Date_formatter(date.getText()));
 //                    tasks.setTime(timeView.getText().toString());
-//                    tasks.setTitle(titl.getText().toString());
+//                    tasks.setTitle(titl.getText().toString());, notifyUser(notifiy.getDrawable())
                     super.onKeyDown(keyCode, event);
                 }
 
@@ -99,7 +100,7 @@ public class Editor extends AppCompatActivity {
                         tym = timeView.getText().toString();
                     } else
                         tym = "00:00";
-                    MyTasks m = new MyTasks(desc.getText().toString(), titl.getText().toString(), tym, date.getText().toString(), false, notifyUser(notifiy.getDrawable()));
+                    MyTasks m = new MyTasks(desc.getText().toString(), titl.getText().toString(), tym, date.getText().toString(), notifyUser(notifiy.getDrawable()), false);
                     MainActivity.li.add(m);
                 } else {
                     notifiy.setImageDrawable(getDrawable(R.drawable.noti_on));
@@ -157,9 +158,20 @@ public class Editor extends AppCompatActivity {
         return drawable == getDrawable(ON) ? true : false;
     }
     private void onOffTogle(ImageView imgView) {
-        int temp= imgView.getDrawable()==getDrawable(ON)?OFF:ON;
-imgView.setImageDrawable(getDrawable(temp));
+        int tag = Integer.valueOf(imgView.getTag().toString());
+        if (tag == ON) {
+            imgView.setImageResource(0);
+            Log.i(TAG, "onOffTogle: FIRST IF");
+            imgView.setImageResource(R.drawable.noti_off);
+            imgView.setTag(OFF);
+        } else
+            if (tag == OFF) {
+            imgView.setTag(ON);
+            Log.i(TAG, "onOffTogle: SECND IF");
+            imgView.setImageResource(0);
+            imgView.setImageResource(R.drawable.noti_on);
+        }
+        Log.i(TAG, "onOffTogle:Clicked ");
     }
-
 
 }

@@ -4,11 +4,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="44dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="2dp"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="true"
 
@@ -21,15 +18,14 @@
 >
         <TextView
             android:textSize="15sp"
-            android:gravity="center"
             android:fontFamily="serif"
+            android:textAlignment="center"
             android:textColor="#000"
-            android:translationZ="4dp"
+            android:text="date"
+            android:elevation="5dp"
             android:id="@+id/date_view"
-            android:layout_weight="1"
-
-android:background="@drawable/rect"
-            android:layout_width="400dp"
+            android:background="@drawable/rect"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -37,7 +33,10 @@ android:background="@drawable/rect"
             android:id="@+id/title_view"
             android:textSize="22sp"
            android:layout_weight="2"
-            android:translationZ="4dp"
+            android:textAlignment="textStart"
+
+android:elevation="5dp"
+            android:text="ffdf"
             android:minHeight="3dp"
             android:background="@drawable/rect"
             android:layout_width="match_parent"
