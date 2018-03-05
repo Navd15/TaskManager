@@ -25,6 +25,8 @@ import brewcrew.com.taskmanager.UIComponents.UserGuide;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 public class Editor extends AppCompatActivity {
 
+    private final int ON = R.drawable.noti_on;
+    private final int OFF = R.drawable.noti_off;
     private static final String TAG = "Editor";
     public static TextView date, timeView;
     public static EditText desc, titl;
@@ -32,18 +34,22 @@ public class Editor extends AppCompatActivity {
     private MyTasks tasks;
     static boolean first_run = true;
     private database db;
-     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         getSupportActionBar().setTitle(null);
-
         date = (TextView) findViewById(R.id.date);
         titl = (EditText) findViewById(R.id.titl);
         desc = (EditText) findViewById(R.id.desc);
         notifiy = (ImageView) findViewById(R.id.notify);
         timeView = (TextView) findViewById(R.id.time_view);
-
+  notifiy.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+          onOffTogle(Editor.notifiy);
+      }
+  });
 //
         Log.i(TAG, "onCreate: " + first_run);
 //        if (first_run) {
@@ -52,13 +58,11 @@ public class Editor extends AppCompatActivity {
         Log.i(TAG, "onCreate:after loop " + first_run);
 //        }
         if (getIntent().hasExtra("from_onCleck")) {
-
             tasks = (MyTasks) MainActivity.li.get(getIntent().getIntExtra("from_onCleck", 0));
             date.setText(tasks.getDate());
             titl.setText(tasks.getTitle());
             desc.setText(tasks.getDesc());
             timeView.setText(tasks.getTime());
-
 
         }
 
@@ -67,22 +71,19 @@ public class Editor extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK)
             if (tasks != null) {
-                db=new database(this);
+                db = new database(this);
                 if (!tasks.getDate().equals(date.getText().toString())
                         | !tasks.getDesc().equals(desc.getText().toString())
                         | !tasks.getTitle().equals(titl.getText().toString())
-                        | !tasks.getTime().equals(timeView.getText().toString())|tasks.isNotifyUser()!=notifyUser(notifiy.getDrawable()) ) {
-                    ContentValues values=new ContentValues();
-                    values.put(databaseEntries.description,desc.getText().toString());
-                    values.put(databaseEntries.date,date.getText().toString());
-                    values.put(databaseEntries.time,timeView.getText().toString());
-                    values.put(databaseEntries.title,titl.getText().toString());
-                    values.put(databaseEntries.notifyUser,notifyUser(notifiy.getDrawable()));
-                    String[] args={String.valueOf(getIntent().getIntExtra("from_onCleck",0)) };
-                    db.getReadableDatabase().update(databaseEntries.tableName,values,"ID",args);
-
-
-
+                        | !tasks.getTime().equals(timeView.getText().toString()) | tasks.isNotifyUser() != notifyUser(notifiy.getDrawable())) {
+                    ContentValues values = new ContentValues();
+                    values.put(databaseEntries.description, desc.getText().toString());
+                    values.put(databaseEntries.date, date.getText().toString());
+                    values.put(databaseEntries.time, timeView.getText().toString());
+                    values.put(databaseEntries.title, titl.getText().toString());
+                    values.put(databaseEntries.notifyUser, notifyUser(notifiy.getDrawable()));
+                    String[] args = {String.valueOf(getIntent().getIntExtra("from_onCleck", 0))};
+                    db.getReadableDatabase().update(databaseEntries.tableName, values, "ID", args);
 // tasks.setDesc(desc.getText().toString());//    DialogFragment  dialogFragment=new DialogFragment();
 //    dialogFragment.show(getSupportFragmentManager(),"datePicker.class");
 //                    tasks.setDate(Date_formatter(date.getText()));
@@ -92,13 +93,13 @@ public class Editor extends AppCompatActivity {
                 }
 
             } else if (desc.getText().toString().length() != 0) {
-                if (date.getText().toString().length() != 0&notifyUser(notifiy.getDrawable())) {
+                if (date.getText().toString().length() != 0 & notifyUser(notifiy.getDrawable())) {
                     String tym = null;
                     if (timeView.getText().toString().length() != 0) {
                         tym = timeView.getText().toString();
                     } else
                         tym = "00:00";
-                    MyTasks m = new MyTasks(desc.getText().toString(),titl.getText().toString(),  tym,date.getText().toString(),false,notifyUser(notifiy.getDrawable()));
+                    MyTasks m = new MyTasks(desc.getText().toString(), titl.getText().toString(), tym, date.getText().toString(), false, notifyUser(notifiy.getDrawable()));
                     MainActivity.li.add(m);
                 } else {
                     notifiy.setImageDrawable(getDrawable(R.drawable.noti_on));
@@ -111,7 +112,6 @@ public class Editor extends AppCompatActivity {
                         }
                     });
                     ad.setCancelable(true);
-
                     AlertDialog adg = ad.create();
                     adg.show();
 
@@ -119,8 +119,6 @@ public class Editor extends AppCompatActivity {
             }
         return super.onKeyDown(keyCode, event);
     }
-
-
     /*
     * Helper methods
     *
@@ -130,8 +128,6 @@ public class Editor extends AppCompatActivity {
         pic.show(getSupportFragmentManager(), "datepicker");
 
     }
-
-
     public void showDatePicker() {
         datePicker pic = new datePicker();
         pic.show(getSupportFragmentManager(), "datepicker");
@@ -149,10 +145,6 @@ public class Editor extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }
     static String Date_formatter(CharSequence charSequence) {
         String temp = charSequence.subSequence(charSequence.length() - 1 - 4, charSequence.length() - 1).toString();
         if (temp != String.valueOf(Calendar.getInstance().YEAR))
@@ -161,9 +153,13 @@ public class Editor extends AppCompatActivity {
             return charSequence.toString().replace(temp, "");
 
     }
+    private boolean notifyUser(Drawable drawable) {
+        return drawable == getDrawable(ON) ? true : false;
+    }
+    private void onOffTogle(ImageView imgView) {
+        int temp= imgView.getDrawable()==getDrawable(ON)?OFF:ON;
+imgView.setImageDrawable(getDrawable(temp));
+    }
 
-private boolean notifyUser(Drawable drawable){
-return  drawable==getDrawable(R.drawable.noti_on)? true:false;
-}
 
 }
