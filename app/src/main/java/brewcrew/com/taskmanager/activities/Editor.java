@@ -52,14 +52,13 @@ public class Editor extends AppCompatActivity {
             }
         });
 //
-        Log.i(TAG, "onCreate: " + first_run);
-//        if (first_run) {
+      if (first_run) {
         showDialog();
-//            first_run = false;blue
-        Log.i(TAG, "onCreate:after loop " + first_run);
-//        }
+       first_run = false;
+
+     }
         if (getIntent().hasExtra("from_onCleck")) {
-            tasks = (MyTasks) MainActivity.li.get(getIntent().getIntExtra("from_onCleck", 0));
+            tasks = MainActivity.li.get(getIntent().getIntExtra("from_onCleck", 0));
             date.setText(tasks.getDate());
             titl.setText(tasks.getTitle());
             desc.setText(tasks.getDesc());
