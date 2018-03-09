@@ -8,29 +8,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Calendar;
-
-import brewcrew.com.taskmanager.db.database;
-import brewcrew.com.taskmanager.db.databaseEntries;
-import brewcrew.com.taskmanager.pickers.datePicker;
-import brewcrew.com.taskmanager.pickers.timePicker;
 import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.UIComponents.UserGuide;
+import brewcrew.com.taskmanager.db.database;
+import brewcrew.com.taskmanager.db.databaseEntries;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
+import brewcrew.com.taskmanager.pickers.datePicker;
+import brewcrew.com.taskmanager.pickers.timePicker;
 public class Editor extends AppCompatActivity {
 
     private final int ON = R.drawable.noti_on;
     private final int OFF = R.drawable.noti_off;
     private static final String TAG = "Editor";
     public static TextView date, timeView;
-    public static EditText desc, titl;
-    public static ImageView notifiy;
+    public  EditText desc, titl;
+    public  ImageView notifiy;
     private MyTasks tasks;
     static boolean first_run = true;
     private database db;
@@ -94,7 +91,7 @@ public class Editor extends AppCompatActivity {
 
             } else if (desc.getText().toString().length() != 0) {
                 if (date.getText().toString().length() != 0 & notifyUser(notifiy.getDrawable())) {
-                    String tym = null;
+                    String tym;
                     if (timeView.getText().toString().length() != 0) {
                         tym = timeView.getText().toString();
                     } else
@@ -144,14 +141,6 @@ public class Editor extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-    static String Date_formatter(CharSequence charSequence) {
-        String temp = charSequence.subSequence(charSequence.length() - 1 - 4, charSequence.length() - 1).toString();
-        if (temp != String.valueOf(Calendar.getInstance().YEAR))
-            return charSequence.toString();
-        else
-            return charSequence.toString().replace(temp, "");
-
     }
     private boolean notifyUser(Drawable drawable) {
         return drawable == getDrawable(ON) ? true : false;

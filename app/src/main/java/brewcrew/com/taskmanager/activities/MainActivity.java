@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
+    private int lastAdapterPosition;
     private Intent add_edit;
     private int date_int = calendar.get(Calendar.DATE);
     String date_tommo = date_int + "/"
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setAdapter(taskRec);
+
 
 
 
@@ -154,9 +156,11 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+
     void toggle(MenuItem item) {
         if (recycler.getLayoutManager() == linearLayoutManager) {
             recycler.setLayoutManager(staggeredGrid);
+            recycler.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition());
             item.setIcon(getDrawable(R.drawable.ic_menu));
 
         } else if (recycler.getLayoutManager() == staggeredGrid) {
