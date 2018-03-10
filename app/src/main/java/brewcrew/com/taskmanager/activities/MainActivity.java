@@ -171,6 +171,9 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     private static Boolean trueFalser(int status) {
         return (status == 0) ? false : true;
     }
+
+
+
     /*
     *Asynchronous Handling of data
     * */
