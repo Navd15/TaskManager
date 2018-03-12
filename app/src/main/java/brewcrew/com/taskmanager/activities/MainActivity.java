@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
-    private int lastAdapterPosition;
+
     private Intent add_edit;
     private int date_int = calendar.get(Calendar.DATE);
     String date_tommo = date_int + "/"
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle(null);
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         Cursor cursor;
@@ -54,11 +55,13 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         Async async = new Async();
         async.execute(cursor);
         try {
-            taskRec = new taskRecycler(async.get(), this);
+            try {
+                taskRec = new taskRecycler(async.get(), this);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         } catch (InterruptedException IE) {
             Log.e(TAG, "onCreate:" + IE.getMessage());
-        } catch (ExecutionException EE) {
-            Log.e(TAG, "onCreate:" + EE.getMessage());
         }
         visibilitySetter();
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
