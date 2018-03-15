@@ -165,10 +165,12 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
             recycler.setLayoutManager(staggeredGrid);
             recycler.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition());
             item.setIcon(getDrawable(R.drawable.ic_menu));
+            recycler.getAdapter().notifyDataSetChanged();
 
         } else if (recycler.getLayoutManager() == staggeredGrid) {
             item.setIcon(getDrawable(R.drawable.ic_align));
             recycler.setLayoutManager(linearLayoutManager);
+            recycler.getAdapter().notifyDataSetChanged();
         }
     }
     private static Boolean trueFalser(int status) {
