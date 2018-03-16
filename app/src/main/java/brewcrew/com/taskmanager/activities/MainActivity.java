@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
+    int Linear_Layout=1;
+    int Staggerd_Layout=2;
+    private Cursor cursor;
+    private Async async = new Async();
 
     private Intent add_edit;
     private int date_int = calendar.get(Calendar.DATE);
@@ -47,27 +51,26 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        li = new ArrayList<>();
+        setLayoutManagers();
         getSupportActionBar().setTitle(null);
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
-        Cursor cursor;
+        selectLayoutManager(Linear_Layout);
+        taskRec=new taskRecycler(li,this);
+        recycler.setAdapter(taskRec);
+
+        //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
-        Async async = new Async();
-        async.execute(cursor);
-        try {
-            try {
-                taskRec = new taskRecycler(async.get(), this);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        } catch (InterruptedException IE) {
-            Log.e(TAG, "onCreate:" + IE.getMessage());
+
+        if(li.size()==0){
+
+            loadData(cursor);
+
         }
         visibilitySetter();
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recycler.setLayoutManager(linearLayoutManager);
-        recycler.setAdapter(taskRec);
+
+
 
 
 
@@ -121,14 +124,13 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     protected void onRestart() {
         super.onRestart();
         visibilitySetter();
-        recycler.setAdapter(taskRec);
 
     }
     @Override
     protected void onResume() {
         super.onResume();
         visibilitySetter();
-        recycler.setAdapter(taskRec);
+
     }
     /*
    Helper methods
@@ -155,21 +157,16 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
 
         }
     }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     void toggle(MenuItem item) {
         if (recycler.getLayoutManager() == linearLayoutManager) {
-            recycler.setLayoutManager(staggeredGrid);
+            selectLayoutManager(Staggerd_Layout);
             recycler.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition());
             item.setIcon(getDrawable(R.drawable.ic_menu));
             recycler.getAdapter().notifyDataSetChanged();
 
         } else if (recycler.getLayoutManager() == staggeredGrid) {
             item.setIcon(getDrawable(R.drawable.ic_align));
-            recycler.setLayoutManager(linearLayoutManager);
+            selectLayoutManager(Linear_Layout);
             recycler.getAdapter().notifyDataSetChanged();
         }
     }
@@ -182,16 +179,10 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     /*
     *Asynchronous Handling of data
     * */
-    private class Async extends AsyncTask<Cursor, Void, ArrayList> {
+    private class Async extends AsyncTask<Cursor, Void, ArrayList<MyTasks>> {
 
         @Override
-        protected void onPreExecute() {
-            li = new ArrayList<>();
-            super.onPreExecute();
-
-        }
-        @Override
-        protected ArrayList doInBackground(Cursor... cursores) {
+        protected ArrayList<MyTasks> doInBackground(Cursor... cursores) {
             Cursor curs = cursores[0];
             int descColumn = curs.getColumnIndexOrThrow(databaseEntries.description);
             int titleColumn = curs.getColumnIndexOrThrow(databaseEntries.title);
@@ -210,10 +201,38 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
             return li;
         }
         @Override
-        protected void onPostExecute(ArrayList list) {
+        protected void onPostExecute(ArrayList<MyTasks> list) {
             super.onPostExecute(list);
+            li=list;
+            recycler.getAdapter().notifyDataSetChanged();
 
         }
+    }
+
+    //load data method envokes async execute
+
+    private void loadData(Cursor cursor){
+        async.execute(cursor);
+    }
+
+    private void selectLayoutManager(int manager) {
+        switch (manager) {
+            case 1:
+                recycler.setLayoutManager(linearLayoutManager);
+                break;
+            case 2:
+                recycler.setLayoutManager(staggeredGrid);
+                break;
+            default:
+                recycler.setLayoutManager(linearLayoutManager);
+        }
+
+    }
+
+    private void setLayoutManagers(){
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
     }
 
 }
