@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="recylerViewColorBg">#e6a64c</color>
     <color name="colorPrimary">#3f9afc</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -19,5 +20,8 @@
     <color name="secondary_text_material_dark">#fcfcff</color>
     <color name="wbc">#2e5486</color>
     <color name="clipPathColor">#96000000</color>
+    <color name="accent_material_dark">#00bcd4</color>
+    <color name="primary_material_dark">#00bcd4</color>
+    <color name="primary_text_material_light">#ffffff</color>
 
 </resources>

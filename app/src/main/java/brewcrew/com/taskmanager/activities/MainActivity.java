@@ -48,13 +48,12 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         li = new ArrayList<>();
-
-        getSupportActionBar().setTitle(null);
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         taskRec = new taskRecycler(li, this);
-        recycler.setAdapter(taskRec);
         setLayoutManagers();
+        recycler.setAdapter(taskRec);
+
         //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
         if (li.size() == 0) {
