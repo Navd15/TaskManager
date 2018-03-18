@@ -78,6 +78,7 @@ public class taskRecycler extends RecyclerView.Adapter<taskRecycler.taskHolders>
     public taskHolders onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_task, null, false);
+        view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
 
         return new taskHolders(view);
     }

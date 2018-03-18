@@ -1,12 +1,10 @@
 package brewcrew.com.taskmanager.activities;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -19,14 +17,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
 
+import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.db.database;
 import brewcrew.com.taskmanager.db.databaseEntries;
-import brewcrew.com.taskmanager.pickers.datePicker;
-import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 import brewcrew.com.taskmanager.helperClasses.taskRecycler;
+import brewcrew.com.taskmanager.pickers.datePicker;
 public class MainActivity extends AppCompatActivity implements taskRecycler.touchListener {
 
     private static final String TAG = "MainActivity";
@@ -37,11 +34,10 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     RecyclerView recycler;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
-    int Linear_Layout=1;
-    int Staggerd_Layout=2;
+    int Linear_Layout = 1;
+    int Staggerd_Layout = 2;
     private Cursor cursor;
     private Async async = new Async();
-
     private Intent add_edit;
     private int date_int = calendar.get(Calendar.DATE);
     String date_tommo = date_int + "/"
@@ -52,29 +48,20 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         li = new ArrayList<>();
-        setLayoutManagers();
+
         getSupportActionBar().setTitle(null);
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
-        selectLayoutManager(Linear_Layout);
-        taskRec=new taskRecycler(li,this);
+        taskRec = new taskRecycler(li, this);
         recycler.setAdapter(taskRec);
-
+        setLayoutManagers();
         //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
-
-        if(li.size()==0){
-
+        if (li.size() == 0) {
             loadData(cursor);
-
         }
+        selectLayoutManager(Linear_Layout);
         visibilitySetter();
-
-
-
-
-
-
 
         /*
         * fab event handling
@@ -124,13 +111,13 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     protected void onRestart() {
         super.onRestart();
         visibilitySetter();
-
+        recycler.getAdapter().notifyDataSetChanged();
     }
     @Override
     protected void onResume() {
         super.onResume();
         visibilitySetter();
-
+        recycler.getAdapter().notifyDataSetChanged();
     }
     /*
    Helper methods
@@ -159,23 +146,21 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     }
     void toggle(MenuItem item) {
         if (recycler.getLayoutManager() == linearLayoutManager) {
+            recycler.scrollToPosition(3);
             selectLayoutManager(Staggerd_Layout);
-            recycler.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition());
-            item.setIcon(getDrawable(R.drawable.ic_menu));
-            recycler.getAdapter().notifyDataSetChanged();
+            item.setIcon(getDrawable(R.drawable.ic_align));
+            recycler.setAdapter(taskRec);
 
         } else if (recycler.getLayoutManager() == staggeredGrid) {
-            item.setIcon(getDrawable(R.drawable.ic_align));
+            item.setIcon(getDrawable(R.drawable.ic_menu));
             selectLayoutManager(Linear_Layout);
             recycler.getAdapter().notifyDataSetChanged();
+            recycler.setAdapter(taskRec);
         }
     }
     private static Boolean trueFalser(int status) {
         return (status == 0) ? false : true;
     }
-
-
-
     /*
     *Asynchronous Handling of data
     * */
@@ -203,22 +188,20 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         @Override
         protected void onPostExecute(ArrayList<MyTasks> list) {
             super.onPostExecute(list);
-            li=list;
+            li = list;
             recycler.getAdapter().notifyDataSetChanged();
 
         }
     }
-
     //load data method envokes async execute
-
-    private void loadData(Cursor cursor){
+    private void loadData(Cursor cursor) {
         async.execute(cursor);
     }
-
     private void selectLayoutManager(int manager) {
         switch (manager) {
             case 1:
                 recycler.setLayoutManager(linearLayoutManager);
+
                 break;
             case 2:
                 recycler.setLayoutManager(staggeredGrid);
@@ -228,8 +211,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         }
 
     }
-
-    private void setLayoutManagers(){
+    private void setLayoutManagers() {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 

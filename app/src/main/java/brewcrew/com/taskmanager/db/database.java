@@ -20,6 +20,7 @@ public class database extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String createTable = "CREATE TABLE IF NOT EXISTS " + databaseEntries.tableName + "("
                 + "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + databaseEntries.title + " text, "
@@ -33,7 +34,7 @@ public class database extends SQLiteOpenHelper {
         //comment below lines during
         //these are just for testing
         for (int i = 0; i < 5; i++) {
-            db.execSQL("INSERT INTO " + databaseEntries.tableName + " " + insert + " VALUES('TITLE','DESC','DATE','TIME',1,0);");
+            db.execSQL("INSERT INTO " + databaseEntries.tableName + " " + insert + " VALUES('T','DESC','DATE','TIME',1,0);");
         }
         Log.i(TAG, "onCreate: runned");
 
@@ -41,6 +42,9 @@ public class database extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
     }
+
+
+
     /*
     * Helper methods
     *
