@@ -20,7 +20,7 @@ public class database extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+String DROPTABLE="DROP TABLE IF EXISTS taskDB.taskDB";
         String createTable = "CREATE TABLE IF NOT EXISTS " + databaseEntries.tableName + "("
                 + "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + databaseEntries.title + " text, "
@@ -29,9 +29,11 @@ public class database extends SQLiteOpenHelper {
                 + databaseEntries.time + " text NOT NULL, "
                 + databaseEntries.notifyUser + " INTEGER NOT NULL, "
                 + databaseEntries.status + " INTEGER  NOT NULL )" + ";";
+        db.execSQL(DROPTABLE);
         db.execSQL(createTable);
 
         //comment below lines during
+        //TODO:Uncomment for loop
         //these are just for testing
         for (int i = 0; i < 5; i++) {
             db.execSQL("INSERT INTO " + databaseEntries.tableName + " " + insert + " VALUES('T','DESC','DATE','TIME',1,0);");

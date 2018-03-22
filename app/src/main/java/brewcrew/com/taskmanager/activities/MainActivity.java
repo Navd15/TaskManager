@@ -53,13 +53,16 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         taskRec = new taskRecycler(li, this);
         setLayoutManagers();
         recycler.setAdapter(taskRec);
+        selectLayoutManager(Linear_Layout);
 
         //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
+
         if (li.size() == 0) {
             loadData(cursor);
         }
-        selectLayoutManager(Linear_Layout);
+
+
         visibilitySetter();
 
         /*
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         Log.i(TAG, "onCleck clicked:" + clickedIndex);
     }
     /*
-    * Show banner if no event is present in list
+    * Show notice if no event is present in list
     *
     * */
     void visibilitySetter() {
