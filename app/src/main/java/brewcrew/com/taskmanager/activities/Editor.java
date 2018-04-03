@@ -22,15 +22,16 @@ import brewcrew.com.taskmanager.pickers.datePicker;
 import brewcrew.com.taskmanager.pickers.timePicker;
 public class Editor extends AppCompatActivity {
 
-    private final int ON = R.drawable.noti_on;
-    private final int OFF = R.drawable.noti_off;
     private static final String TAG = "Editor";
     public static TextView date, timeView;
-    public  EditText desc, titl;
-    public  ImageView notifiy;
-    private MyTasks tasks;
     static boolean first_run = true;
+    private final int ON = R.drawable.noti_on;
+    private final int OFF = R.drawable.noti_off;
+    public EditText desc, titl;
+    public ImageView notifiy;
+    private MyTasks tasks;
     private database db;
+    private int idNo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,17 +50,21 @@ public class Editor extends AppCompatActivity {
             }
         });
 //
-      if (first_run) {
-        showDialog();
-       first_run = false;
+        if (first_run) {
+            showHelpMessage();
+            first_run = false;
 
-     }
-        if (getIntent().hasExtra("from_onCleck")) {
-            tasks = MainActivity.li.get(getIntent().getIntExtra("from_onCleck", 0));
+        }
+        if (getIntent().hasExtra("from_onClick")) {
+            idNo = getIntent().getIntExtra("from_onClick", 0);
+            tasks = MainActivity.li.get(idNo);
             date.setText(tasks.getDate());
             titl.setText(tasks.getTitle());
             desc.setText(tasks.getDesc());
             timeView.setText(tasks.getTime());
+            if (tasks.isNotifyUser()) {
+                notifiy.setTag(OFF);
+            }
 
         }
 
@@ -72,15 +77,17 @@ public class Editor extends AppCompatActivity {
                 if (!tasks.getDate().equals(date.getText().toString())
                         | !tasks.getDesc().equals(desc.getText().toString())
                         | !tasks.getTitle().equals(titl.getText().toString())
-                        | !tasks.getTime().equals(timeView.getText().toString()) | tasks.isNotifyUser() != notifyUser(notifiy.getDrawable())) {
+                        | !tasks.getTime().equals(timeView.getText().toString())
+                        | tasks.isNotifyUser() != notifyUser(notifiy.getDrawable())) {
                     ContentValues values = new ContentValues();
                     values.put(databaseEntries.description, desc.getText().toString());
                     values.put(databaseEntries.date, date.getText().toString());
                     values.put(databaseEntries.time, timeView.getText().toString());
                     values.put(databaseEntries.title, titl.getText().toString());
                     values.put(databaseEntries.notifyUser, notifyUser(notifiy.getDrawable()));
-                    String[] args = {String.valueOf(getIntent().getIntExtra("from_onCleck", 0))};
-                    db.getReadableDatabase().update(databaseEntries.tableName, values, "ID", args);
+                    String[] whereArgs={String.valueOf(idNo)};
+                    int rows = db.getWritableDatabase().update(databaseEntries.tableName, values, "ID=?", whereArgs);
+                    Log.i(TAG, "rowsUpdated:" + rows);
 // tasks.setDesc(desc.getText().toString());//    DialogFragment  dialogFragment=new DialogFragment();
 //    dialogFragment.show(getSupportFragmentManager(),"datePicker.class");
 //                    tasks.setDate(Date_formatter(date.getText()));
@@ -90,7 +97,7 @@ public class Editor extends AppCompatActivity {
                 }
 
             } else if (desc.getText().toString().length() != 0) {
-                if (date.getText().toString().length() != 0 & notifyUser(notifiy.getDrawable())) {
+                if (date.getText().toString().length() != 0 && notifyUser(notifiy.getDrawable())) {
                     String tym;
                     if (timeView.getText().toString().length() != 0) {
                         tym = timeView.getText().toString();
@@ -100,26 +107,15 @@ public class Editor extends AppCompatActivity {
                     MainActivity.li.add(m);
                 } else {
                     notifiy.setImageDrawable(getDrawable(R.drawable.noti_on));
-                    AlertDialog.Builder ad = new AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog);
-                    ad.setMessage("Please select date or toggle \n the notification icon");
-                    ad.setPositiveButton("Set date", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            showDatePicker();
-                        }
-                    });
-                    ad.setCancelable(true);
-                    AlertDialog adg = ad.create();
-                    adg.show();
-
+                    showDialog();
                 }
             }
         return super.onKeyDown(keyCode, event);
     }
     /*
-    * Helper methods
-    *
-    * */
+     * Helper methods
+     *
+     * */
     public void showDatePicker(View v) {
         datePicker pic = new datePicker();
         pic.show(getSupportFragmentManager(), "datepicker");
@@ -133,10 +129,23 @@ public class Editor extends AppCompatActivity {
         new timePicker().show(getFragmentManager(), "time_picker");
 
     }
-    public void showDialog() {
+    public void showHelpMessage() {
         FragmentManager fm = getFragmentManager();
         UserGuide userGuide = new UserGuide();
         userGuide.show(fm, "dialog");
+    }
+    public void showDialog() {
+        AlertDialog.Builder ad = new AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog);
+        ad.setMessage("Please select date or toggle \n the notification icon");
+        ad.setPositiveButton("Set date", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showDatePicker();
+            }
+        });
+        ad.setCancelable(true);
+        AlertDialog adg = ad.create();
+        adg.show();
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -152,8 +161,7 @@ public class Editor extends AppCompatActivity {
             Log.i(TAG, "onOffTogle: FIRST IF");
             imgView.setImageResource(R.drawable.noti_off);
             imgView.setTag(OFF);
-        } else
-            if (tag == OFF) {
+        } else if (tag == OFF) {
             imgView.setTag(ON);
             Log.i(TAG, "onOffTogle: SECND IF");
             imgView.setImageResource(0);

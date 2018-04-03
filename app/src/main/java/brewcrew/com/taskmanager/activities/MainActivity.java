@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
             + "/" + calendar.get(Calendar.YEAR);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         li = new ArrayList<>();
@@ -113,13 +114,17 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     protected void onRestart() {
         super.onRestart();
         visibilitySetter();
-        recycler.getAdapter().notifyDataSetChanged();
+        Log.i(TAG, "onRestart: ");
+        new Async().execute(cursor);
+       recycler.getAdapter().notifyDataSetChanged();
     }
     @Override
     protected void onResume() {
         super.onResume();
         visibilitySetter();
-        recycler.getAdapter().notifyDataSetChanged();
+        new Async().execute(cursor);
+        Log.i(TAG, "onResume: ");
+             recycler.getAdapter().notifyDataSetChanged();
     }
     /*
    Helper methods

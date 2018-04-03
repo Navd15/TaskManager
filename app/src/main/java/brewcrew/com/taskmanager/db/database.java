@@ -20,8 +20,8 @@ public class database extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-String DROPTABLE="DROP TABLE IF EXISTS taskDB.taskDB";
-        String createTable = "CREATE TABLE IF NOT EXISTS " + databaseEntries.tableName + "("
+final String  DROPTABLE="DROP TABLE IF EXISTS taskDB.taskDB";
+     final   String createTable = "CREATE TABLE IF NOT EXISTS " + databaseEntries.tableName + "("
                 + "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + databaseEntries.title + " text, "
                 + databaseEntries.description + "  text NOT NULL, "
@@ -31,14 +31,11 @@ String DROPTABLE="DROP TABLE IF EXISTS taskDB.taskDB";
                 + databaseEntries.status + " INTEGER  NOT NULL )" + ";";
         db.execSQL(DROPTABLE);
         db.execSQL(createTable);
+        Log.i(TAG, "onCreate: runned");
 
-        //comment below lines during
-        //TODO:Uncomment for loop
-        //these are just for testing
         for (int i = 0; i < 5; i++) {
             db.execSQL("INSERT INTO " + databaseEntries.tableName + " " + insert + " VALUES('T','DESC','DATE','TIME',1,0);");
         }
-        Log.i(TAG, "onCreate: runned");
 
     }
     @Override
