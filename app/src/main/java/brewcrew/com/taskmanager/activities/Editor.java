@@ -85,7 +85,7 @@ public class Editor extends AppCompatActivity {
                     values.put(databaseEntries.time, timeView.getText().toString());
                     values.put(databaseEntries.title, titl.getText().toString());
                     values.put(databaseEntries.notifyUser, notifyUser(notifiy.getDrawable()));
-                    String[] whereArgs={String.valueOf(idNo)};
+                    String[] whereArgs = {String.valueOf(idNo + 1)};
                     int rows = db.getWritableDatabase().update(databaseEntries.tableName, values, "ID=?", whereArgs);
                     Log.i(TAG, "rowsUpdated:" + rows);
 // tasks.setDesc(desc.getText().toString());//    DialogFragment  dialogFragment=new DialogFragment();

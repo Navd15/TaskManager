@@ -24,7 +24,7 @@ import brewcrew.com.taskmanager.db.databaseEntries;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 import brewcrew.com.taskmanager.pickers.datePicker;
-public class MainActivity extends AppCompatActivity implements taskRecycler.touchListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     static ArrayList<MyTasks> li;
@@ -32,17 +32,28 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     LinearLayoutManager linearLayoutManager;
     StaggeredGridLayoutManager staggeredGrid;
     RecyclerView recycler;
+    Cursor cursor;
     Calendar calendar = Calendar.getInstance();
     TextView notice;
     int Linear_Layout = 1;
     int Staggerd_Layout = 2;
-    private Cursor cursor;
-    private Async async = new Async();
     private Intent add_edit;
+    taskRecycler.touchListener tt = new taskRecycler.touchListener() {
+        @Override
+        public void onCleck(int clickedIndex) {
+            add_edit = new Intent(getApplicationContext(), Editor.class);
+            add_edit.putExtra("from_onClick", clickedIndex);
+            startActivity(add_edit);
+            Log.i(TAG, "onCleck clicked:" + clickedIndex);
+        }
+    };
     private int date_int = calendar.get(Calendar.DATE);
     String date_tommo = date_int + "/"
             + datePicker.give_month_in_string(calendar.get(Calendar.MONTH))
             + "/" + calendar.get(Calendar.YEAR);
+    private static Boolean trueFalser(int status) {
+        return (status == 0) ? false : true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate: ");
@@ -51,20 +62,16 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         li = new ArrayList<>();
         notice = (TextView) findViewById(R.id.notice_view);
         recycler = (RecyclerView) findViewById(R.id.recycler);
-        taskRec = new taskRecycler(li, this);
         setLayoutManagers();
-        recycler.setAdapter(taskRec);
         selectLayoutManager(Linear_Layout);
-
         //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
-
         if (li.size() == 0) {
             loadData(cursor);
+
         }
-
-
         visibilitySetter();
+
 
         /*
         * fab event handling
@@ -113,30 +120,18 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     @Override
     protected void onRestart() {
         super.onRestart();
-        visibilitySetter();
-        Log.i(TAG, "onRestart: ");
-        new Async().execute(cursor);
-       recycler.getAdapter().notifyDataSetChanged();
+        //loadData(cursor);
+        loadData(database.getCursor(databaseEntries.selectAllQuery, this));
     }
     @Override
     protected void onResume() {
         super.onResume();
-        visibilitySetter();
-        new Async().execute(cursor);
-        Log.i(TAG, "onResume: ");
-             recycler.getAdapter().notifyDataSetChanged();
+        loadData(database.getCursor(databaseEntries.selectAllQuery, this));
     }
     /*
    Helper methods
      */
     // item click events
-    @Override
-    public void onCleck(int clickedIndex) {
-        add_edit = new Intent(getApplicationContext(), Editor.class);
-        add_edit.putExtra("from_onClick", clickedIndex);
-        startActivity(add_edit);
-        Log.i(TAG, "onCleck clicked:" + clickedIndex);
-    }
     /*
     * Show notice if no event is present in list
     *
@@ -153,20 +148,38 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     }
     void toggle(MenuItem item) {
         if (recycler.getLayoutManager() == linearLayoutManager) {
-            recycler.scrollToPosition(3);
+            recycler.scrollToPosition(0);
             selectLayoutManager(Staggerd_Layout);
             item.setIcon(getDrawable(R.drawable.ic_align));
-            recycler.setAdapter(taskRec);
+            recycler.getAdapter().notifyDataSetChanged();
 
         } else if (recycler.getLayoutManager() == staggeredGrid) {
             item.setIcon(getDrawable(R.drawable.ic_menu));
             selectLayoutManager(Linear_Layout);
             recycler.getAdapter().notifyDataSetChanged();
-            recycler.setAdapter(taskRec);
         }
     }
-    private static Boolean trueFalser(int status) {
-        return (status == 0) ? false : true;
+    //load data method envokes async execute
+    private void loadData(Cursor cursor) {
+        new Async().execute(cursor);
+    }
+    private void selectLayoutManager(int manager) {
+        switch (manager) {
+            case 1:
+                recycler.setLayoutManager(linearLayoutManager);
+                break;
+            case 2:
+                recycler.setLayoutManager(staggeredGrid);
+                break;
+            default:
+                recycler.setLayoutManager(linearLayoutManager);
+        }
+
+    }
+    private void setLayoutManagers() {
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
     }
     /*
     *Asynchronous Handling of data
@@ -174,8 +187,15 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
     private class Async extends AsyncTask<Cursor, Void, ArrayList<MyTasks>> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            li.clear();
+
+        }
+        @Override
         protected ArrayList<MyTasks> doInBackground(Cursor... cursores) {
             Cursor curs = cursores[0];
+            //ArrayList<MyTasks> updatedList = new ArrayList<>();
             int descColumn = curs.getColumnIndexOrThrow(databaseEntries.description);
             int titleColumn = curs.getColumnIndexOrThrow(databaseEntries.title);
             int timeColumn = curs.getColumnIndexOrThrow(databaseEntries.time);
@@ -195,33 +215,14 @@ public class MainActivity extends AppCompatActivity implements taskRecycler.touc
         @Override
         protected void onPostExecute(ArrayList<MyTasks> list) {
             super.onPostExecute(list);
-            li = list;
+            Log.i(TAG, "onPostExecute: " + li.size());
+            taskRec = new taskRecycler(list, tt);
+            recycler.setAdapter(taskRec);
             recycler.getAdapter().notifyDataSetChanged();
+            visibilitySetter();
+            Log.i(TAG, "onPostExecute: " + li.size());
 
         }
-    }
-    //load data method envokes async execute
-    private void loadData(Cursor cursor) {
-        async.execute(cursor);
-    }
-    private void selectLayoutManager(int manager) {
-        switch (manager) {
-            case 1:
-                recycler.setLayoutManager(linearLayoutManager);
-
-                break;
-            case 2:
-                recycler.setLayoutManager(staggeredGrid);
-                break;
-            default:
-                recycler.setLayoutManager(linearLayoutManager);
-        }
-
-    }
-    private void setLayoutManagers() {
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-
     }
 
 }
