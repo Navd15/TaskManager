@@ -17,6 +17,4 @@ public final class databaseEntries {
 
 
 
-
-
 }

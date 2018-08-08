@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -13,6 +14,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -61,8 +63,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         li = new ArrayList<>();
         notice = (TextView) findViewById(R.id.notice_view);
+        DividerItemDecoration did=new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         recycler = (RecyclerView) findViewById(R.id.recycler);
+        recycler.addItemDecoration(did);
+
         setLayoutManagers();
+
+
         selectLayoutManager(Linear_Layout);
         //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
@@ -70,13 +77,16 @@ public class MainActivity extends AppCompatActivity {
             loadData(cursor);
 
         }
+        taskRec = new taskRecycler(li, tt);
+        recycler.setAdapter(taskRec);
         visibilitySetter();
+
 
 
         /*
         * fab event handling
         * */
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button fab = (Button) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,11 +188,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setLayoutManagers() {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGrid = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
 
     }
     /*
-    *Asynchronous Handling of data
+    *Asynchronous fetch from db
     * */
     private class Async extends AsyncTask<Cursor, Void, ArrayList<MyTasks>> {
 
@@ -216,8 +226,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<MyTasks> list) {
             super.onPostExecute(list);
             Log.i(TAG, "onPostExecute: " + li.size());
-            taskRec = new taskRecycler(list, tt);
-            recycler.setAdapter(taskRec);
+
+
             recycler.getAdapter().notifyDataSetChanged();
             visibilitySetter();
             Log.i(TAG, "onPostExecute: " + li.size());
