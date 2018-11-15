@@ -5,11 +5,16 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,6 +23,7 @@ import java.util.Random;
 import brewcrew.com.taskmanager.R;
 import brewcrew.com.taskmanager.activities.Editor;
 import brewcrew.com.taskmanager.activities.MainActivity;
+import brewcrew.com.taskmanager.db.database;
 
 /**
  * Created by navdeep on 09/11/2017.
@@ -36,30 +42,50 @@ public class taskRecycler extends RecyclerView.Adapter<taskRecycler.taskHolders>
 
     }
 
+    private interface deleteRow{
+
+        void onDelete(int id);
+
+
+    }
+
+
     final private touchListener listener;
 
-    public class taskHolders extends RecyclerView.ViewHolder implements GestureDetector.OnGestureListener ,View.OnClickListener {
+    public class taskHolders extends RecyclerView.ViewHolder implements GestureDetector.OnGestureListener ,View.OnClickListener,PopupMenu.OnMenuItemClickListener {
 
 
         private static final String TAG = "taskHolders";
         GestureDetectorCompat gestureDetector;
-        FrameLayout frame;
         TextView date, task_title, task_des, label_view;
-
+        PopupMenu pop;
 
         public taskHolders(View itemView) {
             super(itemView);
+
 gestureDetector=new GestureDetectorCompat(itemView.getContext(),this);
             //Intialize views from recycler_task.xml
 
-            frame = itemView.findViewById(R.id.container);
-frame.setOnTouchListener(new View.OnTouchListener() {
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
+            pop=new PopupMenu(itemView.getContext(),itemView);
 
-        return gestureDetector.onTouchEvent(motionEvent);
-    }
-});
+            MenuInflater menuInflater=pop.getMenuInflater();
+            menuInflater.inflate(R.menu.popup_menu,pop.getMenu());
+            pop.setGravity(Gravity.TOP);
+
+            itemView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return gestureDetector.onTouchEvent(motionEvent);
+                }
+            });
+//            frame = itemView.findViewById(R.id.container);
+//frame.setOnTouchListener(new View.OnTouchListener() {
+//    @Override
+//    public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//        return gestureDetector.onTouchEvent(motionEvent);
+//    }
+//});
             label_view = (TextView) itemView.findViewById(R.id.label_view);
             //date field
             date = (TextView) itemView.findViewById(R.id.date_view);
@@ -81,6 +107,7 @@ frame.setOnTouchListener(new View.OnTouchListener() {
 
         @Override
         public boolean onDown(MotionEvent motionEvent) {
+            itemView.animate().translationX(10);
             Log.i(TAG, "onDown: "+motionEvent.getActionMasked());
             return false;
         }
@@ -97,19 +124,25 @@ frame.setOnTouchListener(new View.OnTouchListener() {
 
         @Override
         public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-
-            if (v<v1) {
-                this.frame.animate().translationX(200);
+            View animated=itemView;
+            if(v<v1) {
+                animated.animate().translationX(200);
             }
             else
-                this.frame.animate().translationX(0);
-            return false;
+                animated.animate().translationX(0);
+
+Log.i(TAG, "onScroll: ");
+            return true;
         }
 
         @Override
         public void onLongPress(MotionEvent motionEvent) {
+            pop.setOnMenuItemClickListener(this);
+            pop.show();
 
         }
+
+
 
         @Override
         public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
@@ -118,16 +151,25 @@ frame.setOnTouchListener(new View.OnTouchListener() {
             Log.i(TAG, "onFling: "+motionEvent.getAction());
             return false;
         }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+//            database.getCursor()
+            Log.i(TAG, "onMenuItemClick: "+this.getAdapterPosition());
+            return false;
+        }
     }
 
 
-    private ArrayList<MyTasks> tasks = new ArrayList<MyTasks>();
+    private ArrayList<MyTasks> tasks ;
 
     public taskRecycler(ArrayList tasks, touchListener tcl) {
         this.tasks = tasks;
         listener = tcl;
         Log.i(TAG, "taskRecycler: runned");
     }
+
+
 
     @Override
     public taskHolders onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -152,7 +194,6 @@ frame.setOnTouchListener(new View.OnTouchListener() {
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount:" + tasks.size());
         return tasks.size();
     }
 
