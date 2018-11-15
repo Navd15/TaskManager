@@ -1,4 +1,5 @@
 package brewcrew.com.taskmanager.activities;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ import brewcrew.com.taskmanager.db.databaseEntries;
 import brewcrew.com.taskmanager.helperClasses.MyTasks;
 import brewcrew.com.taskmanager.helperClasses.taskRecycler;
 import brewcrew.com.taskmanager.pickers.datePicker;
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private static final String TAG = "MainActivity";
     static ArrayList<MyTasks> li;
@@ -53,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
     String date_tommo = date_int + "/"
             + datePicker.give_month_in_string(calendar.get(Calendar.MONTH))
             + "/" + calendar.get(Calendar.YEAR);
+
     private static Boolean trueFalser(int status) {
         return (status == 0) ? false : true;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate: ");
@@ -63,13 +68,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         li = new ArrayList<>();
         notice = (TextView) findViewById(R.id.notice_view);
-        DividerItemDecoration did=new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        DividerItemDecoration did = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.addItemDecoration(did);
-
         setLayoutManagers();
-
-
         selectLayoutManager(Linear_Layout);
         //get cursor from databse class
         cursor = database.getCursor(databaseEntries.selectAllQuery, this);
@@ -81,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
         recycler.setAdapter(taskRec);
         visibilitySetter();
 
-
-
         /*
-        * fab event handling
-        * */
+         * fab event handling
+         *
+         * */
+
         Button fab = (Button) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,21 +99,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         // getMenuInflater().inflate();
     }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         return super.onContextItemSelected(item);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -127,25 +133,31 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
     @Override
     protected void onRestart() {
         super.onRestart();
         //loadData(cursor);
         loadData(database.getCursor(databaseEntries.selectAllQuery, this));
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         loadData(database.getCursor(databaseEntries.selectAllQuery, this));
     }
+
     /*
    Helper methods
      */
     // item click events
     /*
-    * Show notice if no event is present in list
-    *
-    * */
+     * Show notice if no event is present in list
+     *
+     * */
     void visibilitySetter() {
         if (li.size() < 1) {
             notice.setVisibility(View.VISIBLE);
@@ -156,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
     void toggle(MenuItem item) {
         if (recycler.getLayoutManager() == linearLayoutManager) {
             recycler.scrollToPosition(0);
@@ -169,10 +182,12 @@ public class MainActivity extends AppCompatActivity {
             recycler.getAdapter().notifyDataSetChanged();
         }
     }
+
     //load data method envokes async execute
     private void loadData(Cursor cursor) {
         new Async().execute(cursor);
     }
+
     private void selectLayoutManager(int manager) {
         switch (manager) {
             case 1:
@@ -186,14 +201,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     private void setLayoutManagers() {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        staggeredGrid = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        staggeredGrid = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
     }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.delete:
+
+                break;
+
+
+        }
+
+        return false;
+    }
+
     /*
-    *Asynchronous fetch from db
-    * */
+     *Asynchronous fetch from db
+     * */
     private class Async extends AsyncTask<Cursor, Void, ArrayList<MyTasks>> {
 
         @Override
@@ -202,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
             li.clear();
 
         }
+
         @Override
         protected ArrayList<MyTasks> doInBackground(Cursor... cursores) {
             Cursor curs = cursores[0];
@@ -212,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             int dateColumn = curs.getColumnIndexOrThrow(databaseEntries.date);
             int statusColumn = curs.getColumnIndexOrThrow(databaseEntries.status);
             int notifyColumn = curs.getColumnIndex(databaseEntries.notifyUser);
+
             while (curs.moveToNext()) {
                 li.add(new MyTasks(curs.getString(descColumn),
                         curs.getString(titleColumn),
@@ -222,11 +254,12 @@ public class MainActivity extends AppCompatActivity {
             curs.close();
             return li;
         }
+
+
+
         @Override
         protected void onPostExecute(ArrayList<MyTasks> list) {
             super.onPostExecute(list);
-            Log.i(TAG, "onPostExecute: " + li.size());
-
 
             recycler.getAdapter().notifyDataSetChanged();
             visibilitySetter();
@@ -234,5 +267,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+
+
 
 }
