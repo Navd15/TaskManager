@@ -28,6 +28,7 @@ public class Editor extends AppCompatActivity {
     private final int ON = R.drawable.noti_on;
     private final int OFF = R.drawable.noti_off;
     public EditText desc, titl;
+    private  ContentValues contentValues;
     public ImageView notifiy;
     private MyTasks tasks;
     private database db;
@@ -43,6 +44,7 @@ public class Editor extends AppCompatActivity {
         notifiy = (ImageView) findViewById(R.id.notify);
         timeView = (TextView) findViewById(R.id.time_view);
         notifiy.setTag(ON);
+
         notifiy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +57,7 @@ public class Editor extends AppCompatActivity {
             first_run = false;
 
         }
+
         if (getIntent().hasExtra("from_onClick")) {
             idNo = getIntent().getIntExtra("from_onClick", 0);
             tasks = MainActivity.li.get(idNo);
@@ -79,14 +82,14 @@ public class Editor extends AppCompatActivity {
                         | !tasks.getTitle().equals(titl.getText().toString())
                         | !tasks.getTime().equals(timeView.getText().toString())
                         | tasks.isNotifyUser() != notifyUser(notifiy.getDrawable())) {
-                    ContentValues values = new ContentValues();
-                    values.put(databaseEntries.description, desc.getText().toString());
-                    values.put(databaseEntries.date, date.getText().toString());
-                    values.put(databaseEntries.time, timeView.getText().toString());
-                    values.put(databaseEntries.title, titl.getText().toString());
-                    values.put(databaseEntries.notifyUser, notifyUser(notifiy.getDrawable()));
+                   contentValues = new ContentValues();
+                    contentValues.put(databaseEntries.description, desc.getText().toString());
+                    contentValues.put(databaseEntries.date, date.getText().toString());
+                    contentValues.put(databaseEntries.time, timeView.getText().toString());
+                    contentValues.put(databaseEntries.title, titl.getText().toString());
+                    contentValues.put(databaseEntries.notifyUser, notifyUser(notifiy.getDrawable()));
                     String[] whereArgs = {String.valueOf(idNo + 1)};
-                    int rows = db.getWritableDatabase().update(databaseEntries.tableName, values, "ID=?", whereArgs);
+                    int rows = db.getWritableDatabase().update(databaseEntries.tableName, contentValues, "ID=?", whereArgs);
                     Log.i(TAG, "rowsUpdated:" + rows);
 // tasks.setDesc(desc.getText().toString());//    DialogFragment  dialogFragment=new DialogFragment();
 //    dialogFragment.show(getSupportFragmentManager(),"datePicker.class");
@@ -101,10 +104,14 @@ public class Editor extends AppCompatActivity {
                     String tym;
                     if (timeView.getText().toString().length() != 0) {
                         tym = timeView.getText().toString();
-                    } else
-                        tym = "00:00";
-                    MyTasks m = new MyTasks(desc.getText().toString(), titl.getText().toString(), tym, date.getText().toString(), notifyUser(notifiy.getDrawable()), false);
-                    MainActivity.li.add(m);
+                    } else{
+                        tym = "00:00";}
+                        contentValues=new ContentValues();
+                    contentValues.put(databaseEntries.description,desc.getText().toString());
+                    contentValues.put(databaseEntries.title,returnText(titl));
+                    contentValues.put(databaseEntries.notifyUser,"");
+
+                    Log.i(TAG, "onKeyDown: "+db.getWritableDatabase().insert(databaseEntries.tableName,null,contentValues));
                 } else {
                     notifiy.setImageDrawable(getDrawable(R.drawable.noti_on));
                     showDialog();
@@ -169,5 +176,10 @@ public class Editor extends AppCompatActivity {
         }
         Log.i(TAG, "onOffTogle:Clicked ");
     }
+ private  <tv extends EditText,TextView> String  returnText(tv t){
+return t.getText()!=null?t.getText().toString():"null";
+
+ }
+
 
 }
