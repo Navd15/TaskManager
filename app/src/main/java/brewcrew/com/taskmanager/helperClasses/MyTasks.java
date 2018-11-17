@@ -6,6 +6,7 @@ package brewcrew.com.taskmanager.helperClasses;
 
 
 public class MyTasks {
+    int ID;
     String title;
     String desc;
     String date;
@@ -19,8 +20,8 @@ public class MyTasks {
     public MyTasks(){};
 
     public MyTasks(String desc) {
+
         this.desc = desc;
-        
     }
 
     public String getTime() {
