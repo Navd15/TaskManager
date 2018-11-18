@@ -16,14 +16,18 @@ public class MyTasks {
     private static final String TAG = "MyTasks";
 
 
-
-    public MyTasks(){};
-
-    public MyTasks(String desc) {
-
-        this.desc = desc;
+    public MyTasks() {
     }
 
+    ;
+
+    public String getID() {
+        return String.valueOf(ID);
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
     public String getTime() {
         return time;
     }
@@ -31,23 +35,15 @@ public class MyTasks {
     public void setTime(String time) {
         this.time = time;
     }
+
     public boolean isNotifyUser() {
         return notifyUser;
     }
+
     public void setNotifyUser(boolean notifyUser) {
         this.notifyUser = notifyUser;
     }
-    public MyTasks(String d, String t1,String t ,String d1, boolean notifyUser,boolean completed) {
 
-        date=d1;
-        title=t1;
-
-        desc=d;
-
-        isCompleted=completed;
-        this.notifyUser=notifyUser;
-        time=t;
-    }
 
     public String getTitle() {
         return title;
@@ -62,7 +58,7 @@ public class MyTasks {
     }
 
     public void setDesc(String desc) {
-        desc = desc;
+        this.desc = desc;
     }
 
     public String getDate() {
