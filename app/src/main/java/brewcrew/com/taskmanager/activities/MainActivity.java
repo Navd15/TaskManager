@@ -243,14 +243,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             int dateColumn = curs.getColumnIndexOrThrow(databaseEntries.date);
             int statusColumn = curs.getColumnIndexOrThrow(databaseEntries.status);
             int notifyColumn = curs.getColumnIndex(databaseEntries.notifyUser);
+            int idColumn=curs.getColumnIndexOrThrow("ID");
+            MyTasks myTasks;
+
 
             while (curs.moveToNext()) {
-                li.add(new MyTasks(curs.getString(descColumn),
-                        curs.getString(titleColumn),
-                        curs.getString(timeColumn),
-                        curs.getString(dateColumn),
-                        trueFalser(curs.getInt(statusColumn)), trueFalser(curs.getInt(notifyColumn))));
+                myTasks=new MyTasks();
+                myTasks.setDate(curs.getString(dateColumn));
+
+                myTasks.setID(curs.getInt(idColumn));
+                myTasks.setDesc(curs.getString(descColumn));
+                myTasks.setNotifyUser(trueFalser(notifyColumn));
+                myTasks.setTitle(curs.getString(titleColumn));
+                myTasks.setTime(curs.getString(timeColumn));
+                myTasks.setCompleted(trueFalser(statusColumn));
+                li.add(myTasks);
             }
+
             curs.close();
             return li;
         }
@@ -260,15 +269,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         @Override
         protected void onPostExecute(ArrayList<MyTasks> list) {
             super.onPostExecute(list);
-
             recycler.getAdapter().notifyDataSetChanged();
             visibilitySetter();
             Log.i(TAG, "onPostExecute: " + li.size());
 
         }
     }
-
-
-
 
 }
